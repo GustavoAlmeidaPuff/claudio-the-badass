@@ -3,7 +3,7 @@
 // remain valid without exposing internal-only rate-limit simulation behavior.
 
 import { setMockBillingAccessOverride } from '../utils/billing.js'
-import type { OverageDisabledReason } from './claudeAiLimits.js'
+import type { OverageDisabledReason } from './claudioiLimits.js'
 
 type SubscriptionType = string
 

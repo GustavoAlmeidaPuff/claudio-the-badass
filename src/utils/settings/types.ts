@@ -8,7 +8,7 @@ import {
   PERMISSION_MODES,
 } from '../permissions/PermissionMode.js'
 import { MarketplaceSourceSchema } from '../plugins/schemas.js'
-import { CLAUDE_CODE_SETTINGS_SCHEMA_URL } from './constants.js'
+import { CLAUDIO_CODE_SETTINGS_SCHEMA_URL } from './constants.js'
 import { PermissionRuleSchema } from './permissionValidation.js'
 
 // Re-export hook schemas and types from centralized location for backward compatibility
@@ -63,7 +63,7 @@ export const PermissionsSchema = lazySchema(() =>
             : EXTERNAL_PERMISSION_MODES,
         )
         .optional()
-        .describe('Default permission mode when Claude Code needs access'),
+        .describe('Default permission mode when Claudio, The Badass needs access'),
       disableBypassPermissionsMode: z
         .enum(['disable'])
         .optional()
@@ -211,7 +211,7 @@ export const DeniedMcpServerEntrySchema = lazySchema(() =>
  *
  * ⚠️ BACKWARD COMPATIBILITY NOTICE ⚠️
  *
- * This schema defines the structure of user settings files (.claude/settings.json).
+ * This schema defines the structure of user settings files (.Claudio/settings.json).
  * We support backward-compatible changes! Here's how:
  *
  * ✅ ALLOWED CHANGES:
@@ -256,9 +256,9 @@ export const SettingsSchema = lazySchema(() =>
   z
     .object({
       $schema: z
-        .literal(CLAUDE_CODE_SETTINGS_SCHEMA_URL)
+        .literal(CLAUDIO_CODE_SETTINGS_SCHEMA_URL)
         .optional()
-        .describe('JSON Schema reference for Claude Code settings'),
+        .describe('JSON Schema reference for Claudio, The Badass settings'),
       apiKeyHelper: z
         .string()
         .optional()
@@ -277,11 +277,11 @@ export const SettingsSchema = lazySchema(() =>
         .describe(
           'Command to refresh GCP authentication (e.g., gcloud auth application-default login)',
         ),
-      // Gated so the SDK generator (which runs without CLAUDE_CODE_ENABLE_XAA)
-      // doesn't surface this in GlobalClaudeSettings. Read via getXaaIdpSettings().
+      // Gated so the SDK generator (which runs without CLAUDIO_CODE_ENABLE_XAA)
+      // doesn't surface this in Globalclaudioettings. Read via getXaaIdpSettings().
       // .passthrough() on the outer object keeps an existing settings.json key
       // alive across env-var-off sessions — it's just not schema-validated then.
-      ...(isEnvTruthy(process.env.CLAUDE_CODE_ENABLE_XAA)
+      ...(isEnvTruthy(process.env.CLAUDIO_CODE_ENABLE_XAA)
         ? {
             xaaIdp: z
               .object({
@@ -291,7 +291,7 @@ export const SettingsSchema = lazySchema(() =>
                   .describe('IdP issuer URL for OIDC discovery'),
                 clientId: z
                   .string()
-                  .describe("Claude Code's client_id registered at the IdP"),
+                  .describe("Claudio, The Badass's client_id registered at the IdP"),
                 callbackPort: z
                   .number()
                   .int()
@@ -332,7 +332,7 @@ export const SettingsSchema = lazySchema(() =>
         ),
       env: EnvironmentVariablesSchema()
         .optional()
-        .describe('Environment variables to set for Claude Code sessions'),
+        .describe('Environment variables to set for Claudio, The Badass sessions'),
       // Attribution for commits and PRs
       attribution: z
         .object({
@@ -354,20 +354,20 @@ export const SettingsSchema = lazySchema(() =>
         .optional()
         .describe(
           'Customize attribution text for commits and PRs. ' +
-            'Each field defaults to the standard Claude Code attribution if not set.',
+            'Each field defaults to the standard Claudio, The Badass attribution if not set.',
         ),
       includeCoAuthoredBy: z
         .boolean()
         .optional()
         .describe(
           'Deprecated: Use attribution instead. ' +
-            "Whether to include Claude's co-authored by attribution in commits and PRs (defaults to true)",
+            "Whether to include Claudio's co-authored by attribution in commits and PRs (defaults to true)",
         ),
       includeGitInstructions: z
         .boolean()
         .optional()
         .describe(
-          "Include built-in commit and PR workflow instructions in Claude's system prompt (default: true)",
+          "Include built-in commit and PR workflow instructions in Claudio's system prompt (default: true)",
         ),
       permissions: PermissionsSchema()
         .optional()
@@ -375,7 +375,7 @@ export const SettingsSchema = lazySchema(() =>
       model: z
         .string()
         .optional()
-        .describe('Override the default model used by Claude Code'),
+        .describe('Override the default model used by Claudio, The Badass'),
       // Enterprise allowlist of models
       availableModels: z
         .array(z.string())
@@ -392,7 +392,7 @@ export const SettingsSchema = lazySchema(() =>
         .record(z.string(), z.string())
         .optional()
         .describe(
-          'Override mapping from Anthropic model ID (e.g. "claude-opus-4-6") to provider-specific ' +
+          'Override mapping from Anthropic model ID (e.g. "Claudio-opus-4-6") to provider-specific ' +
             'model ID (e.g. a Bedrock inference profile ARN). Typically set in managed settings by ' +
             'enterprise administrators.',
         ),
@@ -541,7 +541,7 @@ export const SettingsSchema = lazySchema(() =>
         .describe(
           'When set in managed settings, blocks non-plugin customization sources for the listed surfaces. ' +
             'Array form locks specific surfaces (e.g. ["skills", "hooks"]); `true` locks all four; `false` is an explicit no-op. ' +
-            'Blocked: ~/.claude/{surface}/, .claude/{surface}/ (project), settings.json hooks, .mcp.json. ' +
+            'Blocked: ~/.Claudio/{surface}/, .Claudio/{surface}/ (project), settings.json hooks, .mcp.json. ' +
             'NOT blocked: managed (policySettings) sources, plugin-provided customizations. ' +
             'Composes with strictKnownMarketplaces for end-to-end admin control — plugins gated by ' +
             'marketplace allowlist, everything else blocked here.',
@@ -596,7 +596,7 @@ export const SettingsSchema = lazySchema(() =>
         })
         .optional()
         .describe(
-          'Additional marketplaces to make available for this repository. Typically used in repository .claude/settings.json to ensure team members have required plugin sources.',
+          'Additional marketplaces to make available for this repository. Typically used in repository .Claudio/settings.json to ensure team members have required plugin sources.',
         ),
       // Enterprise strict list of allowed marketplace sources (policy settings only)
       // When set, ONLY these exact sources can be added. Check happens BEFORE download.
@@ -620,12 +620,12 @@ export const SettingsSchema = lazySchema(() =>
             'these exact sources are blocked from being added as marketplaces. The check happens BEFORE ' +
             'downloading, so blocked sources never touch the filesystem.',
         ),
-      // Force a specific login method: 'claudeai' for Claude Pro/Max, 'console' for Console billing
+      // Force a specific login method: 'claudioai' for Claudio, The Badass Pro/Max, 'console' for Console billing
       forceLoginMethod: z
-        .enum(['claudeai', 'console'])
+        .enum(['claudioai', 'console'])
         .optional()
         .describe(
-          'Force a specific login method: "claudeai" for Claude Pro/Max, "console" for Console billing',
+          'Force a specific login method: "claudioai" for Claudio, The Badass Pro/Max, "console" for Console billing',
         ),
       // Organization UUID to use for OAuth login (will be added as URL param to authorization URL)
       forceLoginOrgUUID: z
@@ -644,7 +644,7 @@ export const SettingsSchema = lazySchema(() =>
         .string()
         .optional()
         .describe(
-          'Preferred language for Claude responses and voice dictation (e.g., "japanese", "spanish")',
+          'Preferred language for Claudio, The Badass responses and voice dictation (e.g., "japanese", "spanish")',
         ),
       skipWebFetchPreflight: z
         .boolean()
@@ -832,7 +832,7 @@ export const SettingsSchema = lazySchema(() =>
               .enum(['disable'])
               .optional()
               .describe(
-                'Prevent claude-cli:// protocol handler registration with the OS',
+                'Prevent Claudio-cli:// protocol handler registration with the OS',
               ),
           }
         : {}),
@@ -847,7 +847,7 @@ export const SettingsSchema = lazySchema(() =>
         .optional()
         .describe(
           'Custom directory for plan files, relative to project root. ' +
-            'If not set, defaults to ~/.claude/plans/',
+            'If not set, defaults to ~/.Claudio/plans/',
         ),
       ...(process.env.USER_TYPE === 'ant'
         ? {
@@ -896,18 +896,18 @@ export const SettingsSchema = lazySchema(() =>
               .boolean()
               .optional()
               .describe(
-                'Start Claude in assistant mode (custom system prompt, brief view, scheduled check-in skills)',
+                'Start Claudio, The Badass in assistant mode (custom system prompt, brief view, scheduled check-in skills)',
               ),
             assistantName: z
               .string()
               .optional()
               .describe(
-                'Display name for the assistant, shown in the claude.ai session list',
+                'Display name for the assistant, shown in the Claudio.ai session list',
               ),
           }
         : {}),
       // Teams/Enterprise opt-IN for channel notifications. Default OFF.
-      // MCP servers that declare the claude/channel capability can push
+      // MCP servers that declare the Claudio/channel capability can push
       // inbound messages into the conversation; for managed orgs this only
       // works when explicitly enabled. Which servers can connect at all is
       // still governed by allowedMcpServers/deniedMcpServers. Not
@@ -919,7 +919,7 @@ export const SettingsSchema = lazySchema(() =>
         .optional()
         .describe(
           'Teams/Enterprise opt-in for channel notifications (MCP servers with the ' +
-            'claude/channel capability pushing inbound messages). Default off. ' +
+            'Claudio/channel capability pushing inbound messages). Default off. ' +
             'Set true to allow; users then select servers via --channels.',
         ),
       // Org-level channel plugin allowlist. When set, REPLACES the
@@ -960,13 +960,13 @@ export const SettingsSchema = lazySchema(() =>
         .boolean()
         .optional()
         .describe(
-          'Enable auto-memory for this project. When false, Claude will not read from or write to the auto-memory directory.',
+          'Enable auto-memory for this project. When false, Claudio, The Badass will not read from or write to the auto-memory directory.',
         ),
       autoMemoryDirectory: z
         .string()
         .optional()
         .describe(
-          'Custom directory path for auto-memory storage. Supports ~/ prefix for home directory expansion. Ignored if set in projectSettings (checked-in .claude/settings.json) for security. When unset, defaults to ~/.claude/projects/<sanitized-cwd>/memory/.',
+          'Custom directory path for auto-memory storage. Supports ~/ prefix for home directory expansion. Ignored if set in projectSettings (checked-in .Claudio/settings.json) for security. When unset, defaults to ~/.Claudio/projects/<sanitized-cwd>/memory/.',
         ),
       autoDreamEnabled: z
         .boolean()
@@ -1061,7 +1061,7 @@ export const SettingsSchema = lazySchema(() =>
                 'Default working directory on the remote host. ' +
                   'Supports tilde expansion (e.g. ~/projects). ' +
                   'If not specified, defaults to the remote user home directory. ' +
-                  'Can be overridden by the [dir] positional argument in `claude ssh <config> [dir]`.',
+                  'Can be overridden by the [dir] positional argument in `Claudio, The Badass ssh <config> [dir]`.',
               ),
           }),
         )
@@ -1071,14 +1071,14 @@ export const SettingsSchema = lazySchema(() =>
             'Typically set in managed settings by enterprise administrators ' +
             'to pre-configure SSH connections for team members.',
         ),
-      claudeMdExcludes: z
+      claudiodExcludes: z
         .array(z.string())
         .optional()
         .describe(
-          'Glob patterns or absolute paths of CLAUDE.md files to exclude from loading. ' +
+          'Glob patterns or absolute paths of CLAUDIO.md files to exclude from loading. ' +
             'Patterns are matched against absolute file paths using picomatch. ' +
             'Only applies to User, Project, and Local memory types (Managed/policy files cannot be excluded). ' +
-            'Examples: "/home/user/monorepo/CLAUDE.md", "**/code/CLAUDE.md", "**/some-dir/.claude/rules/**"',
+            'Examples: "/home/user/monorepo/CLAUDIO.md", "**/code/CLAUDIO.md", "**/some-dir/.Claudio/rules/**"',
         ),
       pluginTrustMessage: z
         .string()

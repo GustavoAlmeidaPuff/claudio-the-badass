@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Report a reproducible problem in OpenClaude
+about: Report a reproducible problem in Claudio, The Badass
 title: ""
 labels: ""
 assignees: ""
@@ -26,7 +26,7 @@ What happened instead?
 
 ## Environment
 
-- OpenClaude version:
+- Claudio, The Badass version:
 - OS:
 - Terminal:
 - Provider:

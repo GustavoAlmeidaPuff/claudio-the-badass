@@ -31,7 +31,7 @@ function profile(profile: ProfileFile['profile'], env: ProfileFile['env']): Prof
   }
 }
 
-const missingCodexAuthPath = join(tmpdir(), 'openclaude-missing-codex-auth.json')
+const missingCodexAuthPath = join(tmpdir(), 'Claudio-the-badass-missing-codex-auth.json')
 
 test('matching persisted ollama env is reused for ollama launch', async () => {
   const env = await buildLaunchEnv({
@@ -149,8 +149,8 @@ test('matching persisted gemini env is reused for gemini launch', async () => {
     processEnv: {},
   })
 
-  assert.equal(env.CLAUDE_CODE_USE_GEMINI, '1')
-  assert.equal(env.CLAUDE_CODE_USE_OPENAI, undefined)
+  assert.equal(env.CLAUDIO_THE_BADASS_USE_GEMINI, '1')
+  assert.equal(env.CLAUDIO_THE_BADASS_USE_OPENAI, undefined)
   assert.equal(env.GEMINI_MODEL, 'gemini-2.5-flash')
   assert.equal(env.GEMINI_API_KEY, 'gem-persisted')
   assert.equal(env.GEMINI_BASE_URL, 'https://example.test/v1beta/openai')
@@ -173,12 +173,12 @@ test('gemini launch ignores mismatched persisted openai env and strips other pro
       OPENAI_MODEL: 'gpt-4o-mini',
       CODEX_API_KEY: 'codex-live',
       CHATGPT_ACCOUNT_ID: 'acct_live',
-      CLAUDE_CODE_USE_OPENAI: '1',
+      CLAUDIO_THE_BADASS_USE_OPENAI: '1',
     },
   })
 
-  assert.equal(env.CLAUDE_CODE_USE_GEMINI, '1')
-  assert.equal(env.CLAUDE_CODE_USE_OPENAI, undefined)
+  assert.equal(env.CLAUDIO_THE_BADASS_USE_GEMINI, '1')
+  assert.equal(env.CLAUDIO_THE_BADASS_USE_OPENAI, undefined)
   assert.equal(env.GEMINI_MODEL, 'gemini-2.0-flash')
   assert.equal(env.GEMINI_API_KEY, 'gem-live')
   assert.equal(
@@ -276,7 +276,7 @@ test('codex launch ignores placeholder codex env keys', async () => {
 })
 
 test('codex launch prefers auth account id over stale persisted value', async () => {
-  const codexHome = mkdtempSync(join(tmpdir(), 'openclaude-codex-'))
+  const codexHome = mkdtempSync(join(tmpdir(), 'Claudio-the-badass-codex-'))
   try {
     writeFileSync(
       join(codexHome, 'auth.json'),
@@ -396,7 +396,7 @@ test('gemini profiles require a key', () => {
 })
 
 test('saveProfileFile writes a profile that loadProfileFile can read back', () => {
-  const cwd = mkdtempSync(join(tmpdir(), 'openclaude-profile-file-'))
+  const cwd = mkdtempSync(join(tmpdir(), 'Claudio-the-badass-profile-file-'))
 
   try {
     const persisted = createProfileFile('openai', {
@@ -426,8 +426,8 @@ test('buildStartupEnvFromProfile applies persisted gemini settings when no provi
     processEnv: {},
   })
 
-  assert.equal(env.CLAUDE_CODE_USE_GEMINI, '1')
-  assert.equal(env.CLAUDE_CODE_USE_OPENAI, undefined)
+  assert.equal(env.CLAUDIO_THE_BADASS_USE_GEMINI, '1')
+  assert.equal(env.CLAUDIO_THE_BADASS_USE_OPENAI, undefined)
   assert.equal(env.GEMINI_API_KEY, 'gem-test')
   assert.equal(env.GEMINI_MODEL, 'gemini-2.5-flash')
 })
@@ -442,7 +442,7 @@ test('buildStartupEnvFromProfile rehydrates stored Gemini access token for acces
     readGeminiAccessToken: () => 'token-live',
   })
 
-  assert.equal(env.CLAUDE_CODE_USE_GEMINI, '1')
+  assert.equal(env.CLAUDIO_THE_BADASS_USE_GEMINI, '1')
   assert.equal(env.GEMINI_AUTH_MODE, 'access-token')
   assert.equal(env.GEMINI_ACCESS_TOKEN, 'token-live')
   assert.equal(env.GEMINI_API_KEY, undefined)
@@ -459,7 +459,7 @@ test('buildStartupEnvFromProfile does not inject stored access token for adc pro
     readGeminiAccessToken: () => 'token-live',
   })
 
-  assert.equal(env.CLAUDE_CODE_USE_GEMINI, '1')
+  assert.equal(env.CLAUDIO_THE_BADASS_USE_GEMINI, '1')
   assert.equal(env.GEMINI_AUTH_MODE, 'adc')
   assert.equal(env.GEMINI_ACCESS_TOKEN, undefined)
   assert.equal(env.GEMINI_API_KEY, undefined)
@@ -467,7 +467,7 @@ test('buildStartupEnvFromProfile does not inject stored access token for adc pro
 
 test('buildStartupEnvFromProfile leaves explicit provider selections untouched', async () => {
   const processEnv = {
-    CLAUDE_CODE_USE_GEMINI: '1',
+    CLAUDIO_THE_BADASS_USE_GEMINI: '1',
     GEMINI_API_KEY: 'gem-live',
     GEMINI_MODEL: 'gemini-2.0-flash',
   }
@@ -481,15 +481,15 @@ test('buildStartupEnvFromProfile leaves explicit provider selections untouched',
   })
 
   assert.equal(env, processEnv)
-  assert.equal(env.CLAUDE_CODE_USE_GEMINI, '1')
+  assert.equal(env.CLAUDIO_THE_BADASS_USE_GEMINI, '1')
   assert.equal(env.OPENAI_API_KEY, undefined)
 })
 
 test('buildStartupEnvFromProfile leaves profile-managed env untouched', async () => {
   const processEnv = {
-    CLAUDE_CODE_PROVIDER_PROFILE_ENV_APPLIED: '1',
+    CLAUDIO_THE_BADASS_PROVIDER_PROFILE_ENV_APPLIED: '1',
     ANTHROPIC_BASE_URL: 'https://api.anthropic.com',
-    ANTHROPIC_MODEL: 'claude-sonnet-4-6',
+    ANTHROPIC_MODEL: 'Claudio-sonnet-4-6',
   }
 
   const env = await buildStartupEnvFromProfile({
@@ -501,13 +501,13 @@ test('buildStartupEnvFromProfile leaves profile-managed env untouched', async ()
   })
 
   assert.equal(env, processEnv)
-  assert.equal(env.ANTHROPIC_MODEL, 'claude-sonnet-4-6')
+  assert.equal(env.ANTHROPIC_MODEL, 'Claudio-sonnet-4-6')
   assert.equal(env.OPENAI_MODEL, undefined)
 })
 
 test('buildStartupEnvFromProfile treats explicit falsey provider flags as user intent', async () => {
   const processEnv = {
-    CLAUDE_CODE_USE_OPENAI: '0',
+    CLAUDIO_THE_BADASS_USE_OPENAI: '0',
   }
 
   const env = await buildStartupEnvFromProfile({
@@ -519,7 +519,7 @@ test('buildStartupEnvFromProfile treats explicit falsey provider flags as user i
   })
 
   assert.equal(env, processEnv)
-  assert.equal(env.CLAUDE_CODE_USE_OPENAI, '0')
+  assert.equal(env.CLAUDIO_THE_BADASS_USE_OPENAI, '0')
   assert.equal(env.GEMINI_API_KEY, undefined)
 })
 
@@ -600,7 +600,7 @@ test('startup env ignores poisoned persisted openai model and base url', async (
     processEnv: {},
   })
 
-  assert.equal(env.CLAUDE_CODE_USE_OPENAI, '1')
+  assert.equal(env.CLAUDIO_THE_BADASS_USE_OPENAI, '1')
   assert.equal(env.OPENAI_API_KEY, 'sk-live')
   assert.equal(env.OPENAI_MODEL, 'gpt-4o')
   assert.equal(env.OPENAI_BASE_URL, 'https://api.openai.com/v1')

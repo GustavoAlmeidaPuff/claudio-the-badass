@@ -1,6 +1,6 @@
 /**
  * MCP subcommand handlers — extracted from main.tsx for lazy loading.
- * These are dynamically imported only when the corresponding `claude mcp *` command runs.
+ * These are dynamically imported only when the corresponding `Claudio, The Badass mcp *` command runs.
  */
 
 import { stat } from 'fs/promises';
@@ -228,7 +228,7 @@ export async function mcpRemoveHandler(name: string, options: {
       });
       process.stderr.write('\nTo remove from a specific scope, use:\n');
       scopes.forEach(scope => {
-        process.stderr.write(`  claude mcp remove "${name}" -s ${scope}\n`);
+        process.stderr.write(`  Claudio, The Badass mcp remove "${name}" -s ${scope}\n`);
       });
       cliError();
     }
@@ -245,7 +245,7 @@ export async function mcpListHandler(): Promise<void> {
   } = await getAllMcpConfigs();
   if (Object.keys(configs).length === 0) {
     // biome-ignore lint/suspicious/noConsole:: intentional console output
-    console.log('No MCP servers configured. Use `claude mcp add` to add a server.');
+    console.log('No MCP servers configured. Use `Claudio, The Badass mcp add` to add a server.');
   } else {
     // biome-ignore lint/suspicious/noConsole:: intentional console output
     console.log('Checking MCP server health...\n');
@@ -271,7 +271,7 @@ export async function mcpListHandler(): Promise<void> {
       } else if (server.type === 'http') {
         // biome-ignore lint/suspicious/noConsole:: intentional console output
         console.log(`${name}: ${server.url} (HTTP) - ${status}`);
-      } else if (server.type === 'claudeai-proxy') {
+      } else if (server.type === 'claudioai-proxy') {
         // biome-ignore lint/suspicious/noConsole:: intentional console output
         console.log(`${name}: ${server.url} - ${status}`);
       } else if (!server.type || server.type === 'stdio') {
@@ -369,7 +369,7 @@ export async function mcpGetHandler(name: string): Promise<void> {
     }
   }
   // biome-ignore lint/suspicious/noConsole:: intentional console output
-  console.log(`\nTo remove this server, run: claude mcp remove "${name}" -s ${server.scope}`);
+  console.log(`\nTo remove this server, run: Claudio, The Badass mcp remove "${name}" -s ${server.scope}`);
   // Use gracefulShutdown to properly clean up MCP server connections
   // (process.exit bypasses cleanup handlers, leaving child processes orphaned)
   await gracefulShutdown(0);
@@ -406,7 +406,7 @@ export async function mcpAddJsonHandler(name: string, json: string, options: {
   }
 }
 
-// mcp add-from-claude-desktop (lines 4881–4927)
+// mcp add-from-Claudio-desktop (lines 4881–4927)
 export async function mcpAddFromDesktopHandler(options: {
   scope?: string;
 }): Promise<void> {
@@ -419,11 +419,11 @@ export async function mcpAddFromDesktopHandler(options: {
       source: 'desktop' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS
     });
     const {
-      readClaudeDesktopMcpServers
-    } = await import('../../utils/claudeDesktop.js');
-    const servers = await readClaudeDesktopMcpServers();
+      readclaudioesktopMcpServers
+    } = await import('../../utils/claudioesktop.js');
+    const servers = await readclaudioesktopMcpServers();
     if (Object.keys(servers).length === 0) {
-      cliOk('No MCP servers found in Claude Desktop configuration or configuration file does not exist.');
+      cliOk('No MCP servers found in Claudio, The Badass Desktop configuration or configuration file does not exist.');
     }
     const {
       unmount
@@ -450,5 +450,5 @@ export async function mcpResetChoicesHandler(): Promise<void> {
     disabledMcpjsonServers: [],
     enableAllProjectMcpServers: false
   }));
-  cliOk('All project-scoped (.mcp.json) server approvals and rejections have been reset.\n' + 'You will be prompted for approval next time you start Claude Code.');
+  cliOk('All project-scoped (.mcp.json) server approvals and rejections have been reset.\n' + 'You will be prompted for approval next time you start Claudio, The Badass.');
 }

@@ -7,7 +7,7 @@ import type { PermissionResult } from 'src/utils/permissions/PermissionResult.js
 
 import { z } from 'zod/v4'
 import { getFeatureValue_CACHED_MAY_BE_STALE } from '../../services/analytics/growthbook.js'
-import { queryModelWithStreaming } from '../../services/api/claude.js'
+import { queryModelWithStreaming } from '../../services/api/Claudio.js'
 import { collectCodexCompletedResponse } from '../../services/api/codexShim.js'
 import {
   resolveCodexApiCredentials,
@@ -102,8 +102,8 @@ function shouldUseFirecrawl(): boolean {
   return true
 }
 
-function isClaudeModel(model: string): boolean {
-  return /claude/i.test(model)
+function isclaudioodel(model: string): boolean {
+  return /Claudio/i.test(model)
 }
 
 function shouldUseDuckDuckGo(): boolean {
@@ -115,8 +115,8 @@ function shouldUseDuckDuckGo(): boolean {
     return false
   }
 
-  // Use free DDG search for non-Claude models by default.
-  return !isClaudeModel(getMainLoopModel())
+  // Use free DDG search for non-Claudio, The Badass models by default.
+  return !isclaudioodel(getMainLoopModel())
 }
 
 async function runDuckDuckGoSearch(input: Input): Promise<Output> {
@@ -307,7 +307,7 @@ function buildCodexWebSearchInput(input: Input): Array<Record<string, unknown>> 
 
 function buildCodexWebSearchInstructions(): string {
   return [
-    'You are the OpenClaude web search tool.',
+    'You are the Claudio, The Badass web search tool.',
     'Search the web for the user query and return a concise factual answer.',
     'Include source URLs in the response.',
   ].join(' ')
@@ -431,7 +431,7 @@ async function runCodexWebSearch(
       'Content-Type': 'application/json',
       Authorization: `Bearer ${credentials.apiKey}`,
       'chatgpt-account-id': credentials.accountId,
-      originator: 'openclaude',
+      originator: 'Claudio-the-badass',
     },
     body: JSON.stringify(body),
     signal,
@@ -523,7 +523,7 @@ export const WebSearchTool = buildTool({
   maxResultSizeChars: 100_000,
   shouldDefer: true,
   async description(input) {
-    return `Claude wants to search the web for: ${input.query}`
+    return `Claudio, The Badass wants to search the web for: ${input.query}`
   },
   userFacingName() {
     return 'Web Search'
@@ -554,12 +554,12 @@ export const WebSearchTool = buildTool({
       return true
     }
 
-    // Enable for Vertex AI with supported models (Claude 4.0+)
+    // Enable for Vertex AI with supported models (Claudio, The Badass 4.0+)
     if (provider === 'vertex') {
       const supportsWebSearch =
-        model.includes('claude-opus-4') ||
-        model.includes('claude-sonnet-4') ||
-        model.includes('claude-haiku-4')
+        model.includes('Claudio-opus-4') ||
+        model.includes('Claudio-sonnet-4') ||
+        model.includes('Claudio-haiku-4')
 
       return supportsWebSearch
     }

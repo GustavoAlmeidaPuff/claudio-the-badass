@@ -43,7 +43,7 @@ import {
   getOtelHeadersFromHelper,
   getSubscriptionType,
   is1PApiCustomer,
-  isClaudeAISubscriber,
+  isclaudioISubscriber,
 } from 'src/utils/auth.js'
 import { getPlatform, getWslVersion } from 'src/utils/platform.js'
 
@@ -59,7 +59,7 @@ import { jsonStringify } from '../slowOperations.js'
 import { profileCheckpoint } from '../startupProfiler.js'
 import { isBetaTracingEnabled } from './betaSessionTracing.js'
 import { BigQueryMetricsExporter } from './bigqueryExporter.js'
-import { ClaudeCodeDiagLogger } from './logger.js'
+import { ClaudioTheBadassDiagLogger } from './logger.js'
 import { initializePerfettoTracing } from './perfettoTracing.js'
 import {
   endInteractionSpan,
@@ -322,7 +322,7 @@ async function getOtlpTraceExporters() {
 }
 
 export function isTelemetryEnabled() {
-  return isEnvTruthy(process.env.CLAUDE_CODE_ENABLE_TELEMETRY)
+  return isEnvTruthy(process.env.CLAUDIO_CODE_ENABLE_TELEMETRY)
 }
 
 function getBigQueryExportingReader() {
@@ -335,12 +335,12 @@ function getBigQueryExportingReader() {
 
 function isBigQueryMetricsEnabled() {
   // BigQuery metrics are enabled for:
-  // 1. API customers (excluding Claude.ai subscribers and Bedrock/Vertex)
-  // 2. Claude for Enterprise (C4E) users
-  // 3. Claude for Teams users
+  // 1. API customers (excluding Claudio.ai subscribers and Bedrock/Vertex)
+  // 2. Claudio, The Badass for Enterprise (C4E) users
+  // 3. Claudio, The Badass for Teams users
   const subscriptionType = getSubscriptionType()
   const isC4EOrTeamUser =
-    isClaudeAISubscriber() &&
+    isclaudioISubscriber() &&
     (subscriptionType === 'enterprise' || subscriptionType === 'team')
 
   return is1PApiCustomer() || isC4EOrTeamUser
@@ -446,10 +446,10 @@ export async function initializeTelemetry() {
     }
   }
 
-  diag.setLogger(new ClaudeCodeDiagLogger(), DiagLogLevel.ERROR)
+  diag.setLogger(new ClaudioTheBadassDiagLogger(), DiagLogLevel.ERROR)
 
   // Initialize Perfetto tracing (independent of OTEL)
-  // Enable via CLAUDE_CODE_PERFETTO_TRACE=1 or CLAUDE_CODE_PERFETTO_TRACE=<path>
+  // Enable via CLAUDIO_CODE_PERFETTO_TRACE=1 or CLAUDIO_CODE_PERFETTO_TRACE=<path>
   initializePerfettoTracing()
 
   const readers = []
@@ -457,7 +457,7 @@ export async function initializeTelemetry() {
   // Add customer exporters (if enabled)
   const telemetryEnabled = isTelemetryEnabled()
   logForDebugging(
-    `[3P telemetry] isTelemetryEnabled=${telemetryEnabled} (CLAUDE_CODE_ENABLE_TELEMETRY=${process.env.CLAUDE_CODE_ENABLE_TELEMETRY})`,
+    `[3P telemetry] isTelemetryEnabled=${telemetryEnabled} (CLAUDIO_CODE_ENABLE_TELEMETRY=${process.env.CLAUDIO_CODE_ENABLE_TELEMETRY})`,
   )
   if (telemetryEnabled) {
     readers.push(...(await getOtlpReaders()))
@@ -471,7 +471,7 @@ export async function initializeTelemetry() {
   // Create base resource with service attributes
   const platform = getPlatform()
   const baseAttributes: Record<string, string> = {
-    [ATTR_SERVICE_NAME]: 'claude-code',
+    [ATTR_SERVICE_NAME]: 'Claudio-the-badass',
     [ATTR_SERVICE_VERSION]: MACRO.VERSION,
   }
 
@@ -526,7 +526,7 @@ export async function initializeTelemetry() {
     // Register shutdown for beta tracing
     const shutdownTelemetry = async () => {
       const timeoutMs = parseInt(
-        process.env.CLAUDE_CODE_OTEL_SHUTDOWN_TIMEOUT_MS || '2000',
+        process.env.CLAUDIO_CODE_OTEL_SHUTDOWN_TIMEOUT_MS || '2000',
       )
       try {
         endInteractionSpan()
@@ -653,7 +653,7 @@ export async function initializeTelemetry() {
   // Shutdown metrics and logs on exit (flushes and closes exporters)
   const shutdownTelemetry = async () => {
     const timeoutMs = parseInt(
-      process.env.CLAUDE_CODE_OTEL_SHUTDOWN_TIMEOUT_MS || '2000',
+      process.env.CLAUDIO_CODE_OTEL_SHUTDOWN_TIMEOUT_MS || '2000',
     )
 
     try {
@@ -681,9 +681,9 @@ export async function initializeTelemetry() {
 OpenTelemetry telemetry flush timed out after ${timeoutMs}ms
 
 To resolve this issue, you can:
-1. Increase the timeout by setting CLAUDE_CODE_OTEL_SHUTDOWN_TIMEOUT_MS env var (e.g., 5000 for 5 seconds)
+1. Increase the timeout by setting CLAUDIO_CODE_OTEL_SHUTDOWN_TIMEOUT_MS env var (e.g., 5000 for 5 seconds)
 2. Check if your OpenTelemetry backend is experiencing scalability issues
-3. Disable OpenTelemetry by unsetting CLAUDE_CODE_ENABLE_TELEMETRY env var
+3. Disable OpenTelemetry by unsetting CLAUDIO_CODE_ENABLE_TELEMETRY env var
 
 Current timeout: ${timeoutMs}ms
 `,
@@ -711,7 +711,7 @@ export async function flushTelemetry(): Promise<void> {
   }
 
   const timeoutMs = parseInt(
-    process.env.CLAUDE_CODE_OTEL_FLUSH_TIMEOUT_MS || '5000',
+    process.env.CLAUDIO_CODE_OTEL_FLUSH_TIMEOUT_MS || '5000',
   )
 
   try {

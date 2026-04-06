@@ -7,7 +7,7 @@ import type { LocalJSXCommandCall } from '../../types/command.js'
 const DEFAULT_CONFIG = {
   profile: 'openai',
   env: {
-    CLAUDE_CODE_USE_OPENAI: '1',
+    CLAUDIO_THE_BADASS_USE_OPENAI: '1',
     OPENAI_BASE_URL: 'https://openrouter.ai/api/v1',
     OPENAI_MODEL: 'qwen/qwen3-6b:free',
     OPENAI_API_KEY: 'sk-sua-chave-aqui',
@@ -18,14 +18,14 @@ const DEFAULT_CONFIG = {
 export const call: LocalJSXCommandCall = async (onDone, _context, _args) => {
   const profilePath = resolve(
     process.env['USERPROFILE'] ?? process.env['HOME'] ?? '.',
-    '.openclaude-profile.json',
+    '.Claudio-the-badass-profile.json',
   )
 
   // Sempre escreve o que está rodando agora antes de abrir
   const current = {
     profile: 'openai',
     env: {
-      CLAUDE_CODE_USE_OPENAI: '1',
+      CLAUDIO_THE_BADASS_USE_OPENAI: '1',
       OPENAI_BASE_URL:
         process.env['OPENAI_BASE_URL'] ?? DEFAULT_CONFIG.env.OPENAI_BASE_URL,
       OPENAI_MODEL:
@@ -39,7 +39,7 @@ export const call: LocalJSXCommandCall = async (onDone, _context, _args) => {
   writeFileSync(profilePath, JSON.stringify(current, null, 2), 'utf8')
 
   onDone(
-    `Abrindo ${profilePath} no Notepad...\nSalve o arquivo, feche o Notepad e o OpenClaude vai reiniciar com as novas configuracoes.`,
+    `Abrindo ${profilePath} no Notepad...\nSalve o arquivo, feche o Notepad e o Claudio, The Badass vai reiniciar com as novas configuracoes.`,
     { display: 'system' },
   )
 

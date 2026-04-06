@@ -71,7 +71,7 @@ export const ThinkingAdaptiveSchema = lazySchema(() =>
     .object({
       type: z.literal('adaptive'),
     })
-    .describe('Claude decides when and how much to think (Opus 4.6+).'),
+    .describe('Claudio, The Badass decides when and how much to think (Opus 4.6+).'),
 )
 
 export const ThinkingEnabledSchema = lazySchema(() =>
@@ -99,7 +99,7 @@ export const ThinkingConfigSchema = lazySchema(() =>
       ThinkingDisabledSchema(),
     ])
     .describe(
-      "Controls Claude's thinking/reasoning behavior. When set, takes precedence over the deprecated maxThinkingTokens.",
+      "Controls Claudio's thinking/reasoning behavior. When set, takes precedence over the deprecated maxThinkingTokens.",
     ),
 )
 
@@ -148,19 +148,19 @@ export const McpServerConfigForProcessTransportSchema = lazySchema(() =>
   ]),
 )
 
-export const McpClaudeAIProxyServerConfigSchema = lazySchema(() =>
+export const McpclaudioIProxyServerConfigSchema = lazySchema(() =>
   z.object({
-    type: z.literal('claudeai-proxy'),
+    type: z.literal('claudioai-proxy'),
     url: z.string(),
     id: z.string(),
   }),
 )
 
-// Broader config type for status responses (includes claudeai-proxy which is output-only)
+// Broader config type for status responses (includes claudioai-proxy which is output-only)
 export const McpServerStatusConfigSchema = lazySchema(() =>
   z.union([
     McpServerConfigForProcessTransportSchema(),
-    McpClaudeAIProxyServerConfigSchema(),
+    McpclaudioIProxyServerConfigSchema(),
   ]),
 )
 
@@ -189,7 +189,7 @@ export const McpServerStatusSchema = lazySchema(() =>
         .string()
         .optional()
         .describe(
-          'Configuration scope (e.g., project, user, local, claudeai, managed)',
+          'Configuration scope (e.g., project, user, local, claudioai, managed)',
         ),
       tools: z
         .array(
@@ -213,7 +213,7 @@ export const McpServerStatusSchema = lazySchema(() =>
         })
         .optional()
         .describe(
-          "@internal Server capabilities (available when connected). experimental['claude/channel'] is only present if the server's plugin is on the approved channels allowlist — use its presence to decide whether to show an Enable-channel prompt.",
+          "@internal Server capabilities (available when connected). experimental['Claudio/channel'] is only present if the server's plugin is on the approved channels allowlist — use its presence to decide whether to show an Enable-channel prompt.",
         ),
     })
     .describe('Status information for an MCP server connection.'),
@@ -1064,7 +1064,7 @@ export const ModelInfoSchema = lazySchema(() =>
         .boolean()
         .optional()
         .describe(
-          'Whether this model supports adaptive thinking (Claude decides when and how much to think)',
+          'Whether this model supports adaptive thinking (Claudio, The Badass decides when and how much to think)',
         ),
       supportsFastMode: z
         .boolean()
@@ -1128,7 +1128,7 @@ export const AgentDefinitionSchema = lazySchema(() =>
         .string()
         .optional()
         .describe(
-          "Model alias (e.g. 'sonnet', 'opus', 'haiku') or full model ID (e.g. 'claude-opus-4-5'). If omitted or 'inherit', uses the main model",
+          "Model alias (e.g. 'sonnet', 'opus', 'haiku') or full model ID (e.g. 'Claudio-opus-4-5'). If omitted or 'inherit', uses the main model",
         ),
       mcpServers: z.array(AgentMcpServerSpecSchema()).optional(),
       criticalSystemReminder_EXPERIMENTAL: z
@@ -1163,7 +1163,7 @@ export const AgentDefinitionSchema = lazySchema(() =>
         .enum(['user', 'project', 'local'])
         .optional()
         .describe(
-          "Scope for auto-loading agent memory files. 'user' - ~/.claude/agent-memory/<agentType>/, 'project' - .claude/agent-memory/<agentType>/, 'local' - .claude/agent-memory-local/<agentType>/",
+          "Scope for auto-loading agent memory files. 'user' - ~/.Claudio/agent-memory/<agentType>/, 'project' - .Claudio/agent-memory/<agentType>/, 'local' - .Claudio/agent-memory-local/<agentType>/",
         ),
       effort: z
         .union([z.enum(['low', 'medium', 'high', 'max']), z.number().int()])
@@ -1191,9 +1191,9 @@ export const SettingSourceSchema = lazySchema(() =>
     .enum(['user', 'project', 'local'])
     .describe(
       'Source for loading filesystem-based settings. ' +
-        "'user' - Global user settings (~/.claude/settings.json). " +
-        "'project' - Project settings (.claude/settings.json). " +
-        "'local' - Local settings (.claude/settings.local.json).",
+        "'user' - Global user settings (~/.Claudio/settings.json). " +
+        "'project' - Project settings (.Claudio/settings.json). " +
+        "'local' - Local settings (.Claudio/settings.local.json).",
     ),
 )
 
@@ -1341,7 +1341,7 @@ export const SDKRateLimitInfoSchema = lazySchema(() =>
       isUsingOverage: z.boolean().optional(),
       surpassedThreshold: z.number().optional(),
     })
-    .describe('Rate limit information for claude.ai subscription users.'),
+    .describe('Rate limit information for Claudio.ai subscription users.'),
 )
 
 export const SDKAssistantMessageSchema = lazySchema(() =>

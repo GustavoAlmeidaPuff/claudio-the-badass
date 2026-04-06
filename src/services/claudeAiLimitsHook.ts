@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react'
 import {
-  type ClaudeAILimits,
+  type claudioILimits,
   currentLimits,
   statusListeners,
-} from './claudeAiLimits.js'
+} from './claudioiLimits.js'
 
-export function useClaudeAiLimits(): ClaudeAILimits {
-  const [limits, setLimits] = useState<ClaudeAILimits>({ ...currentLimits })
+export function useclaudioiLimits(): claudioILimits {
+  const [limits, setLimits] = useState<claudioILimits>({ ...currentLimits })
 
   useEffect(() => {
-    const listener = (newLimits: ClaudeAILimits) => {
+    const listener = (newLimits: claudioILimits) => {
       setLimits({ ...newLimits })
     }
     statusListeners.add(listener)

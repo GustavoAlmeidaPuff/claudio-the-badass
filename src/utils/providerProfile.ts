@@ -15,17 +15,17 @@ import {
 import { readGeminiAccessToken } from './geminiCredentials.ts'
 import { getOllamaChatBaseUrl } from './providerDiscovery.ts'
 
-export const PROFILE_FILE_NAME = '.openclaude-profile.json'
+export const PROFILE_FILE_NAME = '.Claudio-the-badass-profile.json'
 export const DEFAULT_GEMINI_BASE_URL =
   'https://generativelanguage.googleapis.com/v1beta/openai'
 export const DEFAULT_GEMINI_MODEL = 'gemini-2.0-flash'
 
 const PROFILE_ENV_KEYS = [
-  'CLAUDE_CODE_USE_OPENAI',
-  'CLAUDE_CODE_USE_GEMINI',
-  'CLAUDE_CODE_USE_BEDROCK',
-  'CLAUDE_CODE_USE_VERTEX',
-  'CLAUDE_CODE_USE_FOUNDRY',
+  'CLAUDIO_THE_BADASS_USE_OPENAI',
+  'CLAUDIO_THE_BADASS_USE_GEMINI',
+  'CLAUDIO_THE_BADASS_USE_BEDROCK',
+  'CLAUDIO_THE_BADASS_USE_VERTEX',
+  'CLAUDIO_THE_BADASS_USE_FOUNDRY',
   'OPENAI_BASE_URL',
   'OPENAI_MODEL',
   'OPENAI_API_KEY',
@@ -408,17 +408,17 @@ export function hasExplicitProviderSelection(
   processEnv: NodeJS.ProcessEnv = process.env,
 ): boolean {
   // If env was already applied from a provider profile, preserve it.
-  if (processEnv.CLAUDE_CODE_PROVIDER_PROFILE_ENV_APPLIED === '1') {
+  if (processEnv.CLAUDIO_THE_BADASS_PROVIDER_PROFILE_ENV_APPLIED === '1') {
     return true
   }
 
   return (
-    processEnv.CLAUDE_CODE_USE_OPENAI !== undefined ||
-    processEnv.CLAUDE_CODE_USE_GITHUB !== undefined ||
-    processEnv.CLAUDE_CODE_USE_GEMINI !== undefined ||
-    processEnv.CLAUDE_CODE_USE_BEDROCK !== undefined ||
-    processEnv.CLAUDE_CODE_USE_VERTEX !== undefined ||
-    processEnv.CLAUDE_CODE_USE_FOUNDRY !== undefined
+    processEnv.CLAUDIO_THE_BADASS_USE_OPENAI !== undefined ||
+    processEnv.CLAUDIO_THE_BADASS_USE_GITHUB !== undefined ||
+    processEnv.CLAUDIO_THE_BADASS_USE_GEMINI !== undefined ||
+    processEnv.CLAUDIO_THE_BADASS_USE_BEDROCK !== undefined ||
+    processEnv.CLAUDIO_THE_BADASS_USE_VERTEX !== undefined ||
+    processEnv.CLAUDIO_THE_BADASS_USE_FOUNDRY !== undefined
   )
 }
 
@@ -490,11 +490,11 @@ export async function buildLaunchEnv(options: {
   if (options.profile === 'gemini') {
     const env: NodeJS.ProcessEnv = {
       ...processEnv,
-      CLAUDE_CODE_USE_GEMINI: '1',
+      CLAUDIO_THE_BADASS_USE_GEMINI: '1',
     }
 
-    delete env.CLAUDE_CODE_USE_OPENAI
-    delete env.CLAUDE_CODE_USE_GITHUB
+    delete env.CLAUDIO_THE_BADASS_USE_OPENAI
+    delete env.CLAUDIO_THE_BADASS_USE_GITHUB
 
     env.GEMINI_MODEL =
       shellGeminiModel ||
@@ -542,11 +542,11 @@ export async function buildLaunchEnv(options: {
 
   const env: NodeJS.ProcessEnv = {
     ...processEnv,
-    CLAUDE_CODE_USE_OPENAI: '1',
+    CLAUDIO_THE_BADASS_USE_OPENAI: '1',
   }
 
-  delete env.CLAUDE_CODE_USE_GEMINI
-  delete env.CLAUDE_CODE_USE_GITHUB
+  delete env.CLAUDIO_THE_BADASS_USE_GEMINI
+  delete env.CLAUDIO_THE_BADASS_USE_GITHUB
   delete env.GEMINI_API_KEY
   delete env.GEMINI_AUTH_MODE
   delete env.GEMINI_ACCESS_TOKEN
@@ -681,7 +681,7 @@ export async function buildStartupEnvFromProfile(options?: {
     persisted,
     goal:
       options?.goal ??
-      normalizeRecommendationGoal(processEnv.OPENCLAUDE_PROFILE_GOAL),
+      normalizeRecommendationGoal(processEnv.CLAUDIO_THE_BADASS_PROFILE_GOAL),
     processEnv,
     getOllamaChatBaseUrl:
       options?.getOllamaChatBaseUrl ?? getOllamaChatBaseUrl,

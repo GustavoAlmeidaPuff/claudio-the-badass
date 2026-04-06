@@ -13,19 +13,19 @@ export type APIProvider =
   | 'codex'
 
 export function getAPIProvider(): APIProvider {
-  return isEnvTruthy(process.env.CLAUDE_CODE_USE_GEMINI)
+  return isEnvTruthy(process.env.CLAUDIO_THE_BADASS_USE_GEMINI)
     ? 'gemini'
-    : isEnvTruthy(process.env.CLAUDE_CODE_USE_GITHUB)
+    : isEnvTruthy(process.env.CLAUDIO_THE_BADASS_USE_GITHUB)
       ? 'github'
-      : isEnvTruthy(process.env.CLAUDE_CODE_USE_OPENAI)
+      : isEnvTruthy(process.env.CLAUDIO_THE_BADASS_USE_OPENAI)
         ? isCodexModel()
           ? 'codex'
           : 'openai'
-        : isEnvTruthy(process.env.CLAUDE_CODE_USE_BEDROCK)
+        : isEnvTruthy(process.env.CLAUDIO_THE_BADASS_USE_BEDROCK)
           ? 'bedrock'
-          : isEnvTruthy(process.env.CLAUDE_CODE_USE_VERTEX)
+          : isEnvTruthy(process.env.CLAUDIO_THE_BADASS_USE_VERTEX)
             ? 'vertex'
-            : isEnvTruthy(process.env.CLAUDE_CODE_USE_FOUNDRY)
+            : isEnvTruthy(process.env.CLAUDIO_THE_BADASS_USE_FOUNDRY)
               ? 'foundry'
               : 'firstParty'
 }

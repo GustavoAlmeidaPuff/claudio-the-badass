@@ -4,8 +4,8 @@ import {
   checkAndRefreshOAuthTokenIfNeeded,
   getAnthropicApiKey,
   getApiKeyFromApiKeyHelper,
-  getClaudeAIOAuthTokens,
-  isClaudeAISubscriber,
+  getclaudioIOAuthTokens,
+  isclaudioISubscriber,
   refreshAndGetAwsCredentials,
   refreshGcpCredentialsIfNeeded,
 } from 'src/utils/auth.js'
@@ -58,10 +58,10 @@ const importRuntimeModule = new Function(
  *
  * Vertex AI:
  * - Model-specific region variables (highest priority):
- *   - VERTEX_REGION_CLAUDE_3_5_HAIKU: Region for Claude 3.5 Haiku model
- *   - VERTEX_REGION_CLAUDE_HAIKU_4_5: Region for Claude Haiku 4.5 model
- *   - VERTEX_REGION_CLAUDE_3_5_SONNET: Region for Claude 3.5 Sonnet model
- *   - VERTEX_REGION_CLAUDE_3_7_SONNET: Region for Claude 3.7 Sonnet model
+ *   - VERTEX_REGION_CLAUDIO_3_5_HAIKU: Region for Claudio, The Badass 3.5 Haiku model
+ *   - VERTEX_REGION_CLAUDIO_HAIKU_4_5: Region for Claudio, The Badass Haiku 4.5 model
+ *   - VERTEX_REGION_CLAUDIO_3_5_SONNET: Region for Claudio, The Badass 3.5 Sonnet model
+ *   - VERTEX_REGION_CLAUDIO_3_7_SONNET: Region for Claudio, The Badass 3.7 Sonnet model
  * - CLOUD_ML_REGION: Optional. The default GCP region to use for all models
  *   If specific model region not specified above
  * - ANTHROPIC_VERTEX_PROJECT_ID: Required. Your GCP project ID
@@ -104,18 +104,18 @@ export async function getAnthropicClient({
   source?: string
   providerOverride?: { model: string; baseURL: string; apiKey: string }
 }): Promise<Anthropic> {
-  const containerId = process.env.CLAUDE_CODE_CONTAINER_ID
-  const remoteSessionId = process.env.CLAUDE_CODE_REMOTE_SESSION_ID
-  const clientApp = process.env.CLAUDE_AGENT_SDK_CLIENT_APP
+  const containerId = process.env.CLAUDIO_CODE_CONTAINER_ID
+  const remoteSessionId = process.env.CLAUDIO_THE_BADASS_REMOTE_SESSION_ID
+  const clientApp = process.env.CLAUDIO_AGENT_SDK_CLIENT_APP
   const customHeaders = getCustomHeaders()
   const defaultHeaders: { [key: string]: string } = {
     'x-app': 'cli',
     'User-Agent': getUserAgent(),
-    'X-Claude-Code-Session-Id': getSessionId(),
+    'X-Claudio-Code-Session-Id': getSessionId(),
     ...customHeaders,
-    ...(containerId ? { 'x-claude-remote-container-id': containerId } : {}),
+    ...(containerId ? { 'x-Claudio-remote-container-id': containerId } : {}),
     ...(remoteSessionId
-      ? { 'x-claude-remote-session-id': remoteSessionId }
+      ? { 'x-Claudio-remote-session-id': remoteSessionId }
       : {}),
     // SDK consumers can identify their app/library for backend analytics
     ...(clientApp ? { 'x-client-app': clientApp } : {}),
@@ -128,7 +128,7 @@ export async function getAnthropicClient({
 
   // Add additional protection header if enabled via env var
   const additionalProtectionEnabled = isEnvTruthy(
-    process.env.CLAUDE_CODE_ADDITIONAL_PROTECTION,
+    process.env.CLAUDIO_CODE_ADDITIONAL_PROTECTION,
   )
   if (additionalProtectionEnabled) {
     defaultHeaders['x-anthropic-additional-protection'] = 'true'
@@ -138,7 +138,7 @@ export async function getAnthropicClient({
   await checkAndRefreshOAuthTokenIfNeeded()
   logForDebugging('[API:auth] OAuth token check complete')
 
-  if (!isClaudeAISubscriber()) {
+  if (!isclaudioISubscriber()) {
     await configureApiKeyHeaders(defaultHeaders, getIsNonInteractiveSession())
   }
 
@@ -175,9 +175,9 @@ export async function getAnthropicClient({
     }) as unknown as Anthropic
   }
   if (
-    isEnvTruthy(process.env.CLAUDE_CODE_USE_OPENAI) ||
-    isEnvTruthy(process.env.CLAUDE_CODE_USE_GITHUB) ||
-    isEnvTruthy(process.env.CLAUDE_CODE_USE_GEMINI)
+    isEnvTruthy(process.env.CLAUDIO_THE_BADASS_USE_OPENAI) ||
+    isEnvTruthy(process.env.CLAUDIO_THE_BADASS_USE_GITHUB) ||
+    isEnvTruthy(process.env.CLAUDIO_THE_BADASS_USE_GEMINI)
   ) {
     const { createOpenAIShimClient } = await import('./openaiShim.js')
     return createOpenAIShimClient({
@@ -186,7 +186,7 @@ export async function getAnthropicClient({
       timeout: parseInt(process.env.API_TIMEOUT_MS || String(600 * 1000), 10),
     }) as unknown as Anthropic
   }
-  if (isEnvTruthy(process.env.CLAUDE_CODE_USE_BEDROCK)) {
+  if (isEnvTruthy(process.env.CLAUDIO_THE_BADASS_USE_BEDROCK)) {
     const { AnthropicBedrock } = await import('@anthropic-ai/bedrock-sdk')
     // Use region override for small fast model if specified
     const awsRegion =
@@ -198,7 +198,7 @@ export async function getAnthropicClient({
     const bedrockArgs: ConstructorParameters<typeof AnthropicBedrock>[0] = {
       ...ARGS,
       awsRegion,
-      ...(isEnvTruthy(process.env.CLAUDE_CODE_SKIP_BEDROCK_AUTH) && {
+      ...(isEnvTruthy(process.env.CLAUDIO_THE_BADASS_SKIP_BEDROCK_AUTH) && {
         skipAuth: true,
       }),
       ...(isDebugToStdErr() && { logger: createStderrLogger() }),
@@ -212,7 +212,7 @@ export async function getAnthropicClient({
         ...bedrockArgs.defaultHeaders,
         Authorization: `Bearer ${process.env.AWS_BEARER_TOKEN_BEDROCK}`,
       }
-    } else if (!isEnvTruthy(process.env.CLAUDE_CODE_SKIP_BEDROCK_AUTH)) {
+    } else if (!isEnvTruthy(process.env.CLAUDIO_THE_BADASS_SKIP_BEDROCK_AUTH)) {
       // Refresh auth and get credentials with cache clearing
       const cachedCredentials = await refreshAndGetAwsCredentials()
       if (cachedCredentials) {
@@ -224,7 +224,7 @@ export async function getAnthropicClient({
     // we have always been lying about the return type - this doesn't support batching or models
     return new AnthropicBedrock(bedrockArgs) as unknown as Anthropic
   }
-  if (isEnvTruthy(process.env.CLAUDE_CODE_USE_FOUNDRY)) {
+  if (isEnvTruthy(process.env.CLAUDIO_THE_BADASS_USE_FOUNDRY)) {
     const { AnthropicFoundry } = await importRuntimeModule(
       '@anthropic-ai/foundry-sdk',
     )
@@ -232,7 +232,7 @@ export async function getAnthropicClient({
     // SDK reads ANTHROPIC_FOUNDRY_API_KEY by default
     let azureADTokenProvider: (() => Promise<string>) | undefined
     if (!process.env.ANTHROPIC_FOUNDRY_API_KEY) {
-      if (isEnvTruthy(process.env.CLAUDE_CODE_SKIP_FOUNDRY_AUTH)) {
+      if (isEnvTruthy(process.env.CLAUDIO_THE_BADASS_SKIP_FOUNDRY_AUTH)) {
         // Mock token provider for testing/proxy scenarios (similar to Vertex mock GoogleAuth)
         azureADTokenProvider = () => Promise.resolve('')
       } else {
@@ -256,10 +256,10 @@ export async function getAnthropicClient({
     // we have always been lying about the return type - this doesn't support batching or models
     return new AnthropicFoundry(foundryArgs) as unknown as Anthropic
   }
-  if (isEnvTruthy(process.env.CLAUDE_CODE_USE_VERTEX)) {
+  if (isEnvTruthy(process.env.CLAUDIO_THE_BADASS_USE_VERTEX)) {
     // Refresh GCP credentials if gcpAuthRefresh is configured and credentials are expired
     // This is similar to how we handle AWS credential refresh for Bedrock
-    if (!isEnvTruthy(process.env.CLAUDE_CODE_SKIP_VERTEX_AUTH)) {
+    if (!isEnvTruthy(process.env.CLAUDIO_THE_BADASS_SKIP_VERTEX_AUTH)) {
       await refreshGcpCredentialsIfNeeded()
     }
 
@@ -301,7 +301,7 @@ export async function getAnthropicClient({
       process.env['GOOGLE_APPLICATION_CREDENTIALS'] ||
       process.env['google_application_credentials']
 
-    const googleAuth = isEnvTruthy(process.env.CLAUDE_CODE_SKIP_VERTEX_AUTH)
+    const googleAuth = isEnvTruthy(process.env.CLAUDIO_THE_BADASS_SKIP_VERTEX_AUTH)
       ? ({
           // Mock GoogleAuth for testing/proxy scenarios
           getClient: () => ({
@@ -341,9 +341,9 @@ export async function getAnthropicClient({
 
   // Determine authentication method based on available tokens
   const clientConfig: ConstructorParameters<typeof Anthropic>[0] = {
-    apiKey: isClaudeAISubscriber() ? null : apiKey || getAnthropicApiKey(),
-    authToken: isClaudeAISubscriber()
-      ? getClaudeAIOAuthTokens()?.accessToken
+    apiKey: isclaudioISubscriber() ? null : apiKey || getAnthropicApiKey(),
+    authToken: isclaudioISubscriber()
+      ? getclaudioIOAuthTokens()?.accessToken
       : undefined,
     // Set baseURL from OAuth config when using staging OAuth
     ...(process.env.USER_TYPE === 'ant' &&

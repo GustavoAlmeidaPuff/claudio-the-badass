@@ -1,8 +1,8 @@
 /**
- * Session Tracing for Claude Code using OpenTelemetry (BETA)
+ * Session Tracing for Claudio, The Badass using OpenTelemetry (BETA)
  *
  * This module provides a high-level API for creating and managing spans
- * to trace Claude Code workflows. Each user interaction creates a root
+ * to trace Claudio, The Badass workflows. Each user interaction creates a root
  * interaction span, which contains operation spans (LLM requests, tool calls, etc.).
  *
  * Requirements:
@@ -126,7 +126,7 @@ function ensureCleanupInterval(): void {
 export function isEnhancedTelemetryEnabled(): boolean {
   if (feature('ENHANCED_TELEMETRY_BETA')) {
     const env =
-      process.env.CLAUDE_CODE_ENHANCED_TELEMETRY_BETA ??
+      process.env.CLAUDIO_CODE_ENHANCED_TELEMETRY_BETA ??
       process.env.ENABLE_ENHANCED_TELEMETRY_BETA
     if (isEnvTruthy(env)) {
       return true
@@ -169,7 +169,7 @@ function createSpanAttributes(
 }
 
 /**
- * Start an interaction span. This wraps a user request -> Claude response cycle.
+ * Start an interaction span. This wraps a user request -> Claudio, The Badass response cycle.
  * This is now a root span that includes all session-level attributes.
  * Sets the interaction context for all subsequent operations.
  */

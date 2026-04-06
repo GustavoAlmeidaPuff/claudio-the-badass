@@ -5,7 +5,7 @@ import {
   type AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
   logEvent,
 } from 'src/services/analytics/index.js'
-import { getClaudeAIOAuthTokens } from 'src/utils/auth.js'
+import { getclaudioIOAuthTokens } from 'src/utils/auth.js'
 import { getGlobalConfig, saveGlobalConfig } from 'src/utils/config.js'
 import { logForDebugging } from 'src/utils/debug.js'
 import { isEnvDefinedFalsy } from 'src/utils/envUtils.js'
@@ -14,7 +14,7 @@ import { clearMcpAuthCache } from './client.js'
 import { normalizeNameForMCP } from './normalization.js'
 import type { ScopedMcpServerConfig } from './types.js'
 
-type ClaudeAIMcpServer = {
+type claudioIMcpServer = {
   type: 'mcp_server'
   id: string
   display_name: string
@@ -22,8 +22,8 @@ type ClaudeAIMcpServer = {
   created_at: string
 }
 
-type ClaudeAIMcpServersResponse = {
-  data: ClaudeAIMcpServer[]
+type claudioIMcpServersResponse = {
+  data: claudioIMcpServer[]
   has_more: boolean
   next_page: string | null
 }
@@ -32,52 +32,52 @@ const FETCH_TIMEOUT_MS = 5000
 const MCP_SERVERS_BETA_HEADER = 'mcp-servers-2025-12-04'
 
 /**
- * Fetches MCP server configurations from Claude.ai org configs.
- * These servers are managed by the organization via Claude.ai.
+ * Fetches MCP server configurations from Claudio.ai org configs.
+ * These servers are managed by the organization via Claudio.ai.
  *
  * Results are memoized for the session lifetime (fetch once per CLI session).
  */
-export const fetchClaudeAIMcpConfigsIfEligible = memoize(
+export const fetchclaudioIMcpConfigsIfEligible = memoize(
   async (): Promise<Record<string, ScopedMcpServerConfig>> => {
     try {
       if (getAPIProvider() !== 'firstParty') {
-        logForDebugging('[claudeai-mcp] Skipped: non-first-party provider')
-        logEvent('tengu_claudeai_mcp_eligibility', {
+        logForDebugging('[claudioai-mcp] Skipped: non-first-party provider')
+        logEvent('tengu_claudioai_mcp_eligibility', {
           state:
             'non_first_party_provider' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         })
         return {}
       }
 
-      if (isEnvDefinedFalsy(process.env.ENABLE_CLAUDEAI_MCP_SERVERS)) {
-        logForDebugging('[claudeai-mcp] Disabled via env var')
-        logEvent('tengu_claudeai_mcp_eligibility', {
+      if (isEnvDefinedFalsy(process.env.ENABLE_CLAUDIOAI_MCP_SERVERS)) {
+        logForDebugging('[claudioai-mcp] Disabled via env var')
+        logEvent('tengu_claudioai_mcp_eligibility', {
           state:
             'disabled_env_var' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         })
         return {}
       }
 
-      const tokens = getClaudeAIOAuthTokens()
+      const tokens = getclaudioIOAuthTokens()
       if (!tokens?.accessToken) {
-        logForDebugging('[claudeai-mcp] No access token')
-        logEvent('tengu_claudeai_mcp_eligibility', {
+        logForDebugging('[claudioai-mcp] No access token')
+        logEvent('tengu_claudioai_mcp_eligibility', {
           state:
             'no_oauth_token' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         })
         return {}
       }
 
-      // Check for user:mcp_servers scope directly instead of isClaudeAISubscriber().
-      // In non-interactive mode, isClaudeAISubscriber() returns false when ANTHROPIC_API_KEY
+      // Check for user:mcp_servers scope directly instead of isclaudioISubscriber().
+      // In non-interactive mode, isclaudioISubscriber() returns false when ANTHROPIC_API_KEY
       // is set (even with valid OAuth tokens) because preferThirdPartyAuthentication() causes
       // isAnthropicAuthEnabled() to return false. Checking the scope directly allows users
-      // with both API keys and OAuth tokens to access claude.ai MCPs in print mode.
+      // with both API keys and OAuth tokens to access Claudio.ai MCPs in print mode.
       if (!tokens.scopes?.includes('user:mcp_servers')) {
         logForDebugging(
-          `[claudeai-mcp] Missing user:mcp_servers scope (scopes=${tokens.scopes?.join(',') || 'none'})`,
+          `[claudioai-mcp] Missing user:mcp_servers scope (scopes=${tokens.scopes?.join(',') || 'none'})`,
         )
-        logEvent('tengu_claudeai_mcp_eligibility', {
+        logEvent('tengu_claudioai_mcp_eligibility', {
           state:
             'missing_scope' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
         })
@@ -87,9 +87,9 @@ export const fetchClaudeAIMcpConfigsIfEligible = memoize(
       const baseUrl = getOauthConfig().BASE_API_URL
       const url = `${baseUrl}/v1/mcp_servers?limit=1000`
 
-      logForDebugging(`[claudeai-mcp] Fetching from ${url}`)
+      logForDebugging(`[claudioai-mcp] Fetching from ${url}`)
 
-      const response = await axios.get<ClaudeAIMcpServersResponse>(url, {
+      const response = await axios.get<claudioIMcpServersResponse>(url, {
         headers: {
           Authorization: `Bearer ${tokens.accessToken}`,
           'Content-Type': 'application/json',
@@ -103,11 +103,11 @@ export const fetchClaudeAIMcpConfigsIfEligible = memoize(
       // Track used normalized names to detect collisions and assign (2), (3), etc. suffixes.
       // We check the final normalized name (including suffix) to handle edge cases where
       // a suffixed name collides with another server's base name (e.g., "Example Server 2"
-      // colliding with "Example Server! (2)" which both normalize to claude_ai_Example_Server_2).
+      // colliding with "Example Server! (2)" which both normalize to Claudio.ai_Example_Server_2).
       const usedNormalizedNames = new Set<string>()
 
       for (const server of response.data.data) {
-        const baseName = `claude.ai ${server.display_name}`
+        const baseName = `Claudio.ai ${server.display_name}`
 
         // Try without suffix first, then increment until we find an unused normalized name
         let finalName = baseName
@@ -121,54 +121,54 @@ export const fetchClaudeAIMcpConfigsIfEligible = memoize(
         usedNormalizedNames.add(finalNormalized)
 
         configs[finalName] = {
-          type: 'claudeai-proxy',
+          type: 'claudioai-proxy',
           url: server.url,
           id: server.id,
-          scope: 'claudeai',
+          scope: 'claudioai',
         }
       }
 
       logForDebugging(
-        `[claudeai-mcp] Fetched ${Object.keys(configs).length} servers`,
+        `[claudioai-mcp] Fetched ${Object.keys(configs).length} servers`,
       )
-      logEvent('tengu_claudeai_mcp_eligibility', {
+      logEvent('tengu_claudioai_mcp_eligibility', {
         state:
           'eligible' as AnalyticsMetadata_I_VERIFIED_THIS_IS_NOT_CODE_OR_FILEPATHS,
       })
       return configs
     } catch {
-      logForDebugging(`[claudeai-mcp] Fetch failed`)
+      logForDebugging(`[claudioai-mcp] Fetch failed`)
       return {}
     }
   },
 )
 
 /**
- * Clears the memoized cache for fetchClaudeAIMcpConfigsIfEligible.
+ * Clears the memoized cache for fetchclaudioIMcpConfigsIfEligible.
  * Call this after login so the next fetch will use the new auth tokens.
  */
-export function clearClaudeAIMcpConfigsCache(): void {
-  fetchClaudeAIMcpConfigsIfEligible.cache.clear?.()
+export function clearclaudioIMcpConfigsCache(): void {
+  fetchclaudioIMcpConfigsIfEligible.cache.clear?.()
   // Also clear the auth cache so freshly-authorized servers get re-connected
   clearMcpAuthCache()
 }
 
 /**
- * Record that a claude.ai connector successfully connected. Idempotent.
+ * Record that a Claudio.ai connector successfully connected. Idempotent.
  *
  * Gates the "N connectors unavailable/need auth" startup notifications: a
  * connector that was working yesterday and is now failed is a state change
  * worth surfacing; an org-configured connector that's been needs-auth since
  * it showed up is one the user has demonstrably ignored.
  */
-export function markClaudeAiMcpConnected(name: string): void {
+export function markclaudioiMcpConnected(name: string): void {
   saveGlobalConfig(current => {
-    const seen = current.claudeAiMcpEverConnected ?? []
+    const seen = current.claudioiMcpEverConnected ?? []
     if (seen.includes(name)) return current
-    return { ...current, claudeAiMcpEverConnected: [...seen, name] }
+    return { ...current, claudioiMcpEverConnected: [...seen, name] }
   })
 }
 
-export function hasClaudeAiMcpEverConnected(name: string): boolean {
-  return (getGlobalConfig().claudeAiMcpEverConnected ?? []).includes(name)
+export function hasclaudioiMcpEverConnected(name: string): boolean {
+  return (getGlobalConfig().claudioiMcpEverConnected ?? []).includes(name)
 }

@@ -32,7 +32,7 @@ export class OAuthService {
   async startOAuthFlow(
     authURLHandler: (url: string, automaticUrl?: string) => Promise<void>,
     options?: {
-      loginWithClaudeAi?: boolean
+      loginWithclaudioi?: boolean
       inferenceOnly?: boolean
       expiresIn?: number
       orgUUID?: string
@@ -60,7 +60,7 @@ export class OAuthService {
       codeChallenge,
       state,
       port: this.port,
-      loginWithClaudeAi: options?.loginWithClaudeAi,
+      loginWithclaudioi: options?.loginWithclaudioi,
       inferenceOnly: options?.inferenceOnly,
       orgUUID: options?.orgUUID,
       loginHint: options?.loginHint,

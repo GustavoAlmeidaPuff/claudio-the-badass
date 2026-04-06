@@ -1,7 +1,7 @@
 import { feature } from 'bun:bundle'
-import { shouldAutoEnableClaudeInChrome } from 'src/utils/claudeInChrome/setup.js'
+import { shouldAutoEnableclaudionChrome } from 'src/utils/claudionChrome/setup.js'
 import { registerBatchSkill } from './batch.js'
-import { registerClaudeInChromeSkill } from './claudeInChrome.js'
+import { registerclaudionChromeSkill } from './claudionChrome.js'
 import { registerDebugSkill } from './debug.js'
 import { registerKeybindingsSkill } from './keybindings.js'
 import { registerSimplifySkill } from './simplify.js'
@@ -51,14 +51,14 @@ export function initBundledSkills(): void {
     /* eslint-enable @typescript-eslint/no-require-imports */
     registerScheduleRemoteAgentsSkill()
   }
-  if (feature('BUILDING_CLAUDE_APPS')) {
+  if (feature('BUILDING_CLAUDIO_APPS')) {
     /* eslint-disable @typescript-eslint/no-require-imports */
-    const { registerClaudeApiSkill } = require('./claudeApi.js')
+    const { registerclaudiopiSkill } = require('./claudiopi.js')
     /* eslint-enable @typescript-eslint/no-require-imports */
-    registerClaudeApiSkill()
+    registerclaudiopiSkill()
   }
-  if (shouldAutoEnableClaudeInChrome()) {
-    registerClaudeInChromeSkill()
+  if (shouldAutoEnableclaudionChrome()) {
+    registerclaudionChromeSkill()
   }
   if (feature('RUN_SKILL_GENERATOR')) {
     /* eslint-disable @typescript-eslint/no-require-imports */

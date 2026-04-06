@@ -36,8 +36,8 @@ export type ProviderPresetDefaults = Omit<ProviderProfileInput, 'provider'> & {
 
 const DEFAULT_OLLAMA_BASE_URL = 'http://localhost:11434/v1'
 const DEFAULT_OLLAMA_MODEL = 'llama3.1:8b'
-const PROFILE_ENV_APPLIED_FLAG = 'CLAUDE_CODE_PROVIDER_PROFILE_ENV_APPLIED'
-const PROFILE_ENV_APPLIED_ID = 'CLAUDE_CODE_PROVIDER_PROFILE_ENV_APPLIED_ID'
+const PROFILE_ENV_APPLIED_FLAG = 'CLAUDIO_THE_BADASS_PROVIDER_PROFILE_ENV_APPLIED'
+const PROFILE_ENV_APPLIED_ID = 'CLAUDIO_THE_BADASS_PROVIDER_PROFILE_ENV_APPLIED_ID'
 
 function trimValue(value: string | undefined): string {
   return value?.trim() ?? ''
@@ -123,7 +123,7 @@ export function getProviderPresetDefaults(
         provider: 'anthropic',
         name: 'Anthropic',
         baseUrl: process.env.ANTHROPIC_BASE_URL ?? 'https://api.anthropic.com',
-        model: process.env.ANTHROPIC_MODEL ?? 'claude-sonnet-4-6',
+        model: process.env.ANTHROPIC_MODEL ?? 'Claudio-sonnet-4-6',
         apiKey: process.env.ANTHROPIC_API_KEY ?? '',
         requiresApiKey: true,
       }
@@ -256,12 +256,12 @@ function hasProviderSelectionFlags(
   processEnv: NodeJS.ProcessEnv = process.env,
 ): boolean {
   return (
-    processEnv.CLAUDE_CODE_USE_OPENAI !== undefined ||
-    processEnv.CLAUDE_CODE_USE_GEMINI !== undefined ||
-    processEnv.CLAUDE_CODE_USE_GITHUB !== undefined ||
-    processEnv.CLAUDE_CODE_USE_BEDROCK !== undefined ||
-    processEnv.CLAUDE_CODE_USE_VERTEX !== undefined ||
-    processEnv.CLAUDE_CODE_USE_FOUNDRY !== undefined
+    processEnv.CLAUDIO_THE_BADASS_USE_OPENAI !== undefined ||
+    processEnv.CLAUDIO_THE_BADASS_USE_GEMINI !== undefined ||
+    processEnv.CLAUDIO_THE_BADASS_USE_GITHUB !== undefined ||
+    processEnv.CLAUDIO_THE_BADASS_USE_BEDROCK !== undefined ||
+    processEnv.CLAUDIO_THE_BADASS_USE_VERTEX !== undefined ||
+    processEnv.CLAUDIO_THE_BADASS_USE_FOUNDRY !== undefined
   )
 }
 
@@ -274,11 +274,11 @@ function hasConflictingProviderFlagsForProfile(
   }
 
   return (
-    processEnv.CLAUDE_CODE_USE_GEMINI !== undefined ||
-    processEnv.CLAUDE_CODE_USE_GITHUB !== undefined ||
-    processEnv.CLAUDE_CODE_USE_BEDROCK !== undefined ||
-    processEnv.CLAUDE_CODE_USE_VERTEX !== undefined ||
-    processEnv.CLAUDE_CODE_USE_FOUNDRY !== undefined
+    processEnv.CLAUDIO_THE_BADASS_USE_GEMINI !== undefined ||
+    processEnv.CLAUDIO_THE_BADASS_USE_GITHUB !== undefined ||
+    processEnv.CLAUDIO_THE_BADASS_USE_BEDROCK !== undefined ||
+    processEnv.CLAUDIO_THE_BADASS_USE_VERTEX !== undefined ||
+    processEnv.CLAUDIO_THE_BADASS_USE_FOUNDRY !== undefined
   )
 }
 
@@ -317,12 +317,12 @@ function isProcessEnvAlignedWithProfile(
   }
 
   return (
-    processEnv.CLAUDE_CODE_USE_OPENAI !== undefined &&
-    processEnv.CLAUDE_CODE_USE_GEMINI === undefined &&
-    processEnv.CLAUDE_CODE_USE_GITHUB === undefined &&
-    processEnv.CLAUDE_CODE_USE_BEDROCK === undefined &&
-    processEnv.CLAUDE_CODE_USE_VERTEX === undefined &&
-    processEnv.CLAUDE_CODE_USE_FOUNDRY === undefined &&
+    processEnv.CLAUDIO_THE_BADASS_USE_OPENAI !== undefined &&
+    processEnv.CLAUDIO_THE_BADASS_USE_GEMINI === undefined &&
+    processEnv.CLAUDIO_THE_BADASS_USE_GITHUB === undefined &&
+    processEnv.CLAUDIO_THE_BADASS_USE_BEDROCK === undefined &&
+    processEnv.CLAUDIO_THE_BADASS_USE_VERTEX === undefined &&
+    processEnv.CLAUDIO_THE_BADASS_USE_FOUNDRY === undefined &&
     sameOptionalEnvValue(processEnv.OPENAI_BASE_URL, profile.baseUrl) &&
     sameOptionalEnvValue(processEnv.OPENAI_MODEL, profile.model) &&
     (!includeApiKey ||
@@ -345,12 +345,12 @@ export function getActiveProviderProfile(
 export function clearProviderProfileEnvFromProcessEnv(
   processEnv: NodeJS.ProcessEnv = process.env,
 ): void {
-  delete processEnv.CLAUDE_CODE_USE_OPENAI
-  delete processEnv.CLAUDE_CODE_USE_GEMINI
-  delete processEnv.CLAUDE_CODE_USE_GITHUB
-  delete processEnv.CLAUDE_CODE_USE_BEDROCK
-  delete processEnv.CLAUDE_CODE_USE_VERTEX
-  delete processEnv.CLAUDE_CODE_USE_FOUNDRY
+  delete processEnv.CLAUDIO_THE_BADASS_USE_OPENAI
+  delete processEnv.CLAUDIO_THE_BADASS_USE_GEMINI
+  delete processEnv.CLAUDIO_THE_BADASS_USE_GITHUB
+  delete processEnv.CLAUDIO_THE_BADASS_USE_BEDROCK
+  delete processEnv.CLAUDIO_THE_BADASS_USE_VERTEX
+  delete processEnv.CLAUDIO_THE_BADASS_USE_FOUNDRY
 
   delete processEnv.OPENAI_BASE_URL
   delete processEnv.OPENAI_API_BASE
@@ -386,7 +386,7 @@ export function applyProviderProfileToProcessEnv(profile: ProviderProfile): void
     return
   }
 
-  process.env.CLAUDE_CODE_USE_OPENAI = '1'
+  process.env.CLAUDIO_THE_BADASS_USE_OPENAI = '1'
   process.env.OPENAI_BASE_URL = profile.baseUrl
   process.env.OPENAI_MODEL = profile.model
 

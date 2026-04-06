@@ -21,13 +21,13 @@ import { useAppState, useSetAppState, useAppStateStore } from '../../state/AppSt
 import { ModelPicker } from '../ModelPicker.js';
 import { modelDisplayString, isOpus1mMergeEnabled } from '../../utils/model/model.js';
 import { isBilledAsExtraUsage } from '../../utils/extraUsage.js';
-import { ClaudeMdExternalIncludesDialog } from '../ClaudeMdExternalIncludesDialog.js';
+import { claudiodExternalIncludesDialog } from '../claudiodExternalIncludesDialog.js';
 import { ChannelDowngradeDialog, type ChannelDowngradeChoice } from '../ChannelDowngradeDialog.js';
 import { Dialog } from '../design-system/Dialog.js';
 import { Select } from '../CustomSelect/index.js';
 import { OutputStylePicker } from '../OutputStylePicker.js';
 import { LanguagePicker } from '../LanguagePicker.js';
-import { getExternalClaudeMdIncludes, getMemoryFiles, hasExternalClaudeMdIncludes } from 'src/utils/claudemd.js';
+import { getExternalclaudiodIncludes, getMemoryFiles, hasExternalclaudiodIncludes } from 'src/utils/claudiomd.js';
 import { KeyboardShortcutHint } from '../design-system/KeyboardShortcutHint.js';
 import { ConfigurableShortcutHint } from '../ConfigurableShortcutHint.js';
 import { Byline } from '../design-system/Byline.js';
@@ -196,9 +196,9 @@ export function Config({
     onIsSearchModeChange?.(ownsEsc);
   }, [ownsEsc, onIsSearchModeChange]);
   const isConnectedToIde = hasAccessToIDEExtensionDiffFeature(context.options.mcpClients);
-  const isFileCheckpointingAvailable = !isEnvTruthy(process.env.CLAUDE_CODE_DISABLE_FILE_CHECKPOINTING);
+  const isFileCheckpointingAvailable = !isEnvTruthy(process.env.CLAUDIO_THE_BADASS_DISABLE_FILE_CHECKPOINTING);
   const memoryFiles = React.use(getMemoryFiles(true));
-  const shouldShowExternalIncludesToggle = hasExternalClaudeMdIncludes(memoryFiles);
+  const shouldShowExternalIncludesToggle = hasExternalclaudiodIncludes(memoryFiles);
   const autoUpdaterDisabledReason = getAutoUpdaterDisabledReason();
   function onChangeMainModelConfig(value: string | null): void {
     const previousModel = mainLoopModel;
@@ -720,7 +720,7 @@ export function Config({
     }
   }, {
     id: 'agentPushNotifEnabled',
-    label: 'Push when Claude decides',
+    label: 'Push when Claudio, The Badass decides',
     value: globalConfig.agentPushNotifEnabled ?? false,
     type: 'boolean' as const,
     onChange(agentPushNotifEnabled: boolean) {
@@ -891,20 +891,20 @@ export function Config({
       });
     }
   }] : []), {
-    id: 'claudeInChromeDefaultEnabled',
-    label: 'Claude in Chrome enabled by default',
-    value: globalConfig.claudeInChromeDefaultEnabled ?? true,
+    id: 'claudionChromeDefaultEnabled',
+    label: 'Claudio, The Badass in Chrome enabled by default',
+    value: globalConfig.claudionChromeDefaultEnabled ?? true,
     type: 'boolean' as const,
     onChange(enabled_5: boolean) {
       saveGlobalConfig(current_18 => ({
         ...current_18,
-        claudeInChromeDefaultEnabled: enabled_5
+        claudionChromeDefaultEnabled: enabled_5
       }));
       setGlobalConfig({
         ...getGlobalConfig(),
-        claudeInChromeDefaultEnabled: enabled_5
+        claudionChromeDefaultEnabled: enabled_5
       });
-      logEvent('tengu_claude_in_chrome_setting_changed', {
+      logEvent('tengu_claudio_in_chrome_setting_changed', {
         enabled: enabled_5
       });
     }
@@ -994,10 +994,10 @@ export function Config({
     }
   }] : []), ...(shouldShowExternalIncludesToggle ? [{
     id: 'showExternalIncludesDialog',
-    label: 'External CLAUDE.md includes',
+    label: 'External CLAUDIO.md includes',
     value: (() => {
       const projectConfig = getCurrentProjectConfig();
-      if (projectConfig.hasClaudeMdExternalIncludesApproved) {
+      if (projectConfig.hasclaudiodExternalIncludesApproved) {
         return 'true';
       } else {
         return 'false';
@@ -1120,7 +1120,7 @@ export function Config({
     });
     // Check for API key changes
     // On homespace, ANTHROPIC_API_KEY is preserved in process.env for child
-    // processes but ignored by Claude Code itself (see auth.ts).
+    // processes but ignored by Claudio, The Badass itself (see auth.ts).
     const effectiveApiKey = isRunningOnHomespace() ? undefined : process.env.ANTHROPIC_API_KEY;
     const initialUsingCustomKey = Boolean(effectiveApiKey && initialConfig.current.customApiKeyResponses?.approved?.includes(normalizeApiKeyForConfig(effectiveApiKey)));
     const currentUsingCustomKey = Boolean(effectiveApiKey && globalConfig.customApiKeyResponses?.approved?.includes(normalizeApiKeyForConfig(effectiveApiKey)));
@@ -1538,10 +1538,10 @@ export function Config({
             </Byline>
           </Text>
         </> : showSubmenu === 'ExternalIncludes' ? <>
-          <ClaudeMdExternalIncludesDialog onDone={() => {
+          <claudiodExternalIncludesDialog onDone={() => {
         setShowSubmenu(null);
         setTabsHidden(false);
-      }} externalIncludes={getExternalClaudeMdIncludes(memoryFiles)} />
+      }} externalIncludes={getExternalclaudiodIncludes(memoryFiles)} />
           <Text dimColor>
             <Byline>
               <KeyboardShortcutHint shortcut="Enter" action="confirm" />

@@ -7,7 +7,7 @@ import { Select } from './CustomSelect/index.js';
 import { Dialog } from './design-system/Dialog.js';
 
 // NOTE: This copy is legally reviewed — do not modify without Legal team approval.
-export const AUTO_MODE_DESCRIPTION = "Auto mode lets Claude handle permission prompts automatically — Claude checks each tool call for risky actions and prompt injection before executing. Actions Claude identifies as safe are executed, while actions Claude identifies as risky are blocked and Claude may try a different approach. Ideal for long-running tasks. Sessions are slightly more expensive. Claude can make mistakes that allow harmful commands to run, it's recommended to only use in isolated environments. Shift+Tab to change mode.";
+export const AUTO_MODE_DESCRIPTION = "Auto mode lets Claudio, The Badass handle permission prompts automatically — Claudio, The Badass checks each tool call for risky actions and prompt injection before executing. Actions Claudio, The Badass identifies as safe are executed, while actions Claudio, The Badass identifies as risky are blocked and Claudio, The Badass may try a different approach. Ideal for long-running tasks. Sessions are slightly more expensive. Claudio, The Badass can make mistakes that allow harmful commands to run, it's recommended to only use in isolated environments. Shift+Tab to change mode.";
 type Props = {
   onAccept(): void;
   onDecline(): void;
@@ -70,7 +70,7 @@ export function AutoModeOptInDialog(t0: Props) {
   const onChange = t2;
   let t3;
   if ($[4] === Symbol.for("react.memo_cache_sentinel")) {
-    t3 = <Box flexDirection="column" gap={1}><Text>{AUTO_MODE_DESCRIPTION}</Text><Link url="https://code.claude.com/docs/en/security" /></Box>;
+    t3 = <Box flexDirection="column" gap={1}><Text>{AUTO_MODE_DESCRIPTION}</Text><Link url="https://code.Claudio.com/docs/en/security" /></Box>;
     $[4] = t3;
   } else {
     t3 = $[4];

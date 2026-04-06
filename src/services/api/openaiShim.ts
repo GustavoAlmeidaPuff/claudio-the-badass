@@ -1,5 +1,5 @@
 /**
- * OpenAI-compatible API shim for Claude Code.
+ * OpenAI-compatible API shim for Claudio, The Badass.
  *
  * Translates Anthropic SDK calls (anthropic.beta.messages.create) into
  * OpenAI-compatible chat completion requests and streams back events
@@ -9,14 +9,14 @@
  * Together, Groq, Fireworks, DeepSeek, Mistral, and any OpenAI-compatible API.
  *
  * Environment variables:
- *   CLAUDE_CODE_USE_OPENAI=1          — enable this provider
+ *   CLAUDIO_THE_BADASS_USE_OPENAI=1          — enable this provider
  *   OPENAI_API_KEY=sk-...             — API key (optional for local models)
  *   OPENAI_BASE_URL=http://...        — base URL (default: https://api.openai.com/v1)
  *   OPENAI_MODEL=gpt-4o              — default model override
  *   CODEX_API_KEY / ~/.codex/auth.json — Codex auth for codexplan/codexspark
  *
  * GitHub Models (models.github.ai), OpenAI-compatible:
- *   CLAUDE_CODE_USE_GITHUB=1         — enable GitHub inference (no need for USE_OPENAI)
+ *   CLAUDIO_THE_BADASS_USE_GITHUB=1         — enable GitHub inference (no need for USE_OPENAI)
  *   GITHUB_TOKEN or GH_TOKEN         — PAT with models access (mapped to Bearer auth)
  *   OPENAI_MODEL                     — optional; use github:copilot or openai/gpt-4.1 style IDs
  */
@@ -63,7 +63,7 @@ const GITHUB_429_MAX_DELAY_SEC = 32
 const GEMINI_API_HOST = 'generativelanguage.googleapis.com'
 
 function isGithubModelsMode(): boolean {
-  return isEnvTruthy(process.env.CLAUDE_CODE_USE_GITHUB)
+  return isEnvTruthy(process.env.CLAUDIO_THE_BADASS_USE_GITHUB)
 }
 
 function hasGeminiApiHost(baseUrl: string | undefined): boolean {
@@ -214,7 +214,7 @@ function convertContentBlocks(
 
 function isGeminiMode(): boolean {
   return (
-    isEnvTruthy(process.env.CLAUDE_CODE_USE_GEMINI) ||
+    isEnvTruthy(process.env.CLAUDIO_THE_BADASS_USE_GEMINI) ||
     hasGeminiApiHost(process.env.OPENAI_BASE_URL)
   )
 }
@@ -232,7 +232,7 @@ function convertMessages(
   }
 
   for (const msg of messages) {
-    // Claude Code wraps messages in { role, message: { role, content } }
+    // Claudio, The Badass wraps messages in { role, message: { role, content } }
     const inner = msg.message ?? msg
     const role = (inner as { role?: string }).role ?? msg.role
     const content = (inner as { content?: unknown }).content
@@ -905,7 +905,7 @@ async function* openaiStreamToAnthropic(
 
 class OpenAIShimStream {
   private generator: AsyncGenerator<AnthropicStreamEvent>
-  // The controller property is checked by claude.ts to distinguish streams from error messages
+  // The controller property is checked by Claudio.ts to distinguish streams from error messages
   controller = new AbortController()
 
   constructor(generator: AsyncGenerator<AnthropicStreamEvent>) {
@@ -1336,7 +1336,7 @@ export function createOpenAIShimClient(options: {
 
   // When Gemini provider is active, map Gemini env vars to OpenAI-compatible ones
   // so the existing providerConfig.ts infrastructure picks them up correctly.
-  if (isEnvTruthy(process.env.CLAUDE_CODE_USE_GEMINI)) {
+  if (isEnvTruthy(process.env.CLAUDIO_THE_BADASS_USE_GEMINI)) {
     process.env.OPENAI_BASE_URL ??=
       process.env.GEMINI_BASE_URL ??
       'https://generativelanguage.googleapis.com/v1beta/openai'
@@ -1348,7 +1348,7 @@ export function createOpenAIShimClient(options: {
     if (process.env.GEMINI_MODEL && !process.env.OPENAI_MODEL) {
       process.env.OPENAI_MODEL = process.env.GEMINI_MODEL
     }
-  } else if (isEnvTruthy(process.env.CLAUDE_CODE_USE_GITHUB)) {
+  } else if (isEnvTruthy(process.env.CLAUDIO_THE_BADASS_USE_GITHUB)) {
     process.env.OPENAI_BASE_URL ??= GITHUB_MODELS_DEFAULT_BASE
     process.env.OPENAI_API_KEY ??=
       process.env.GITHUB_TOKEN ?? process.env.GH_TOKEN ?? ''

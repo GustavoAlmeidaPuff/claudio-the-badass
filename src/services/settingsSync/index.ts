@@ -1,7 +1,7 @@
 /**
  * Settings Sync Service
  *
- * Syncs user settings and memory files across Claude Code environments.
+ * Syncs user settings and memory files across Claudio, The Badass environments.
  *
  * - Interactive CLI: Uploads local settings to remote (incremental, only changed entries)
  * - CCR: Downloads remote settings to local before plugin installation
@@ -16,15 +16,15 @@ import pickBy from 'lodash-es/pickBy.js'
 import { dirname } from 'path'
 import { getIsInteractive } from '../../bootstrap/state.js'
 import {
-  CLAUDE_AI_INFERENCE_SCOPE,
+  CLAUDIO_AI_INFERENCE_SCOPE,
   getOauthConfig,
   OAUTH_BETA_HEADER,
 } from '../../constants/oauth.js'
 import {
   checkAndRefreshOAuthTokenIfNeeded,
-  getClaudeAIOAuthTokens,
+  getclaudioIOAuthTokens,
 } from '../../utils/auth.js'
-import { clearMemoryFileCaches } from '../../utils/claudemd.js'
+import { clearMemoryFileCaches } from '../../utils/claudiomd.js'
 import { getMemoryPath } from '../../utils/config.js'
 import { logForDiagnosticsNoPII } from '../../utils/diagLogs.js'
 import { classifyAxiosError } from '../../utils/errors.js'
@@ -37,7 +37,7 @@ import { markInternalWrite } from '../../utils/settings/internalWrites.js'
 import { getSettingsFilePathForSource } from '../../utils/settings/settings.js'
 import { resetSettingsCache } from '../../utils/settings/settingsCache.js'
 import { sleep } from '../../utils/sleep.js'
-import { getClaudeCodeUserAgent } from '../../utils/userAgent.js'
+import { getClaudioTheBadassUserAgent } from '../../utils/userAgent.js'
 import { getFeatureValue_CACHED_MAY_BE_STALE } from '../analytics/growthbook.js'
 import { logEvent } from '../analytics/index.js'
 import { getRetryDelay } from '../api/withRetry.js'
@@ -214,9 +214,9 @@ function isUsingOAuth(): boolean {
     return false
   }
 
-  const tokens = getClaudeAIOAuthTokens()
+  const tokens = getclaudioIOAuthTokens()
   return Boolean(
-    tokens?.accessToken && tokens.scopes?.includes(CLAUDE_AI_INFERENCE_SCOPE),
+    tokens?.accessToken && tokens.scopes?.includes(CLAUDIO_AI_INFERENCE_SCOPE),
   )
 }
 
@@ -228,7 +228,7 @@ function getSettingsSyncAuthHeaders(): {
   headers: Record<string, string>
   error?: string
 } {
-  const oauthTokens = getClaudeAIOAuthTokens()
+  const oauthTokens = getclaudioIOAuthTokens()
   if (oauthTokens?.accessToken) {
     return {
       headers: {
@@ -259,7 +259,7 @@ async function fetchUserSettingsOnce(): Promise<SettingsSyncFetchResult> {
 
     const headers: Record<string, string> = {
       ...authHeaders.headers,
-      'User-Agent': getClaudeCodeUserAgent(),
+      'User-Agent': getClaudioTheBadassUserAgent(),
     }
 
     const endpoint = getSettingsSyncEndpoint()
@@ -360,7 +360,7 @@ async function uploadUserSettings(
 
     const headers: Record<string, string> = {
       ...authHeaders.headers,
-      'User-Agent': getClaudeCodeUserAgent(),
+      'User-Agent': getClaudioTheBadassUserAgent(),
       'Content-Type': 'application/json',
     }
 
@@ -483,7 +483,7 @@ async function writeFileForSync(
  *
  * After writing, invalidates relevant caches:
  * - resetSettingsCache() for settings files
- * - clearMemoryFileCaches() for memory files (CLAUDE.md)
+ * - clearMemoryFileCaches() for memory files (CLAUDIO.md)
  */
 async function applyRemoteEntriesToLocal(
   entries: Record<string, string>,

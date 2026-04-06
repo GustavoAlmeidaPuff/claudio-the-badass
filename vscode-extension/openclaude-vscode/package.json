@@ -1,7 +1,7 @@
 {
-  "name": "openclaude-vscode",
-  "displayName": "OpenClaude",
-  "description": "Practical VS Code companion for OpenClaude with project-aware launch behavior and a real Control Center.",
+  "name": "Claudio-the-badass-vscode",
+  "displayName": "Claudio, The Badass",
+  "description": "Practical VS Code companion for Claudio, The Badass with project-aware launch behavior and a real Control Center.",
   "version": "0.1.1",
   "publisher": "devnull-bootloader",
   "engines": {
@@ -13,13 +13,13 @@
   ],
   "activationEvents": [
     "onStartupFinished",
-    "onCommand:openclaude.start",
-    "onCommand:openclaude.startInWorkspaceRoot",
-    "onCommand:openclaude.openDocs",
-    "onCommand:openclaude.openSetupDocs",
-    "onCommand:openclaude.openWorkspaceProfile",
-    "onCommand:openclaude.openControlCenter",
-    "onView:openclaude.controlCenter"
+    "onCommand:Claudio-the-badass.start",
+    "onCommand:Claudio-the-badass.startInWorkspaceRoot",
+    "onCommand:Claudio-the-badass.openDocs",
+    "onCommand:Claudio-the-badass.openSetupDocs",
+    "onCommand:Claudio-the-badass.openWorkspaceProfile",
+    "onCommand:Claudio-the-badass.openControlCenter",
+    "onView:Claudio-the-badass.controlCenter"
   ],
   "main": "./src/extension.js",
   "files": [
@@ -33,79 +33,79 @@
   "contributes": {
     "commands": [
       {
-        "command": "openclaude.start",
-        "title": "OpenClaude: Launch in Terminal",
-        "category": "OpenClaude"
+        "command": "Claudio-the-badass.start",
+        "title": "Claudio, The Badass: Launch in Terminal",
+        "category": "Claudio, The Badass"
       },
       {
-        "command": "openclaude.startInWorkspaceRoot",
-        "title": "OpenClaude: Launch in Workspace Root",
-        "category": "OpenClaude"
+        "command": "Claudio-the-badass.startInWorkspaceRoot",
+        "title": "Claudio, The Badass: Launch in Workspace Root",
+        "category": "Claudio, The Badass"
       },
       {
-        "command": "openclaude.openDocs",
-        "title": "OpenClaude: Open Repository",
-        "category": "OpenClaude"
+        "command": "Claudio-the-badass.openDocs",
+        "title": "Claudio, The Badass: Open Repository",
+        "category": "Claudio, The Badass"
       },
       {
-        "command": "openclaude.openSetupDocs",
-        "title": "OpenClaude: Open Setup Guide",
-        "category": "OpenClaude"
+        "command": "Claudio-the-badass.openSetupDocs",
+        "title": "Claudio, The Badass: Open Setup Guide",
+        "category": "Claudio, The Badass"
       },
       {
-        "command": "openclaude.openWorkspaceProfile",
-        "title": "OpenClaude: Open Workspace Profile",
-        "category": "OpenClaude"
+        "command": "Claudio-the-badass.openWorkspaceProfile",
+        "title": "Claudio, The Badass: Open Workspace Profile",
+        "category": "Claudio, The Badass"
       },
       {
-        "command": "openclaude.openControlCenter",
-        "title": "OpenClaude: Open Control Center",
-        "category": "OpenClaude"
+        "command": "Claudio-the-badass.openControlCenter",
+        "title": "Claudio, The Badass: Open Control Center",
+        "category": "Claudio, The Badass"
       }
     ],
     "viewsContainers": {
       "activitybar": [
         {
-          "id": "openclaude",
-          "title": "OpenClaude",
-          "icon": "media/openclaude.svg"
+          "id": "Claudio-the-badass",
+          "title": "Claudio, The Badass",
+          "icon": "media/Claudio-the-badass.svg"
         }
       ]
     },
     "views": {
-      "openclaude": [
+      "Claudio-the-badass": [
         {
-          "id": "openclaude.controlCenter",
+          "id": "Claudio-the-badass.controlCenter",
           "name": "Control Center",
           "type": "webview"
         }
       ]
     },
     "configuration": {
-      "title": "OpenClaude",
+      "title": "Claudio, The Badass",
       "properties": {
-        "openclaude.launchCommand": {
+        "Claudio-the-badass.launchCommand": {
           "type": "string",
-          "default": "openclaude",
-          "description": "Command run in the integrated terminal when launching OpenClaude."
+          "default": "Claudio-the-badass",
+          "description": "Command run in the integrated terminal when launching Claudio, The Badass."
         },
-        "openclaude.terminalName": {
+        "Claudio-the-badass.terminalName": {
           "type": "string",
-          "default": "OpenClaude",
-          "description": "Integrated terminal tab name for OpenClaude sessions."
+          "default": "Claudio, The Badass",
+          "description": "Integrated terminal tab name for Claudio, The Badass sessions."
         },
-        "openclaude.useOpenAIShim": {
+        "Claudio-the-badass.useOpenAIShim": {
           "type": "boolean",
           "default": false,
-          "description": "Optionally set CLAUDE_CODE_USE_OPENAI=1 in launched OpenClaude terminals."
+          "description": "Optionally set CLAUDIO_THE_BADASS_USE_OPENAI=1 in launched Claudio, The Badass terminals."
         }
       }
     },
     "themes": [
       {
-        "label": "OpenClaude Terminal Black",
+        "label": "Claudio, The Badass Terminal Black",
         "uiTheme": "vs-dark",
-        "path": "./themes/OpenClaude-Terminal-Black.json"
+        "path": "./themes/Claudio, The Badass-Terminal-Black.json"
       }
     ]
   },
@@ -115,7 +115,7 @@
     "package": "npx @vscode/vsce package --no-dependencies"
   },
   "keywords": [
-    "openclaude",
+    "Claudio-the-badass",
     "terminal",
     "theme",
     "cli",
@@ -123,7 +123,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Gitlawb/openclaude"
+    "url": "https://github.com/Gitlawb/Claudio-the-badass"
   },
   "license": "MIT"
 }

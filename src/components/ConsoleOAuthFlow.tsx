@@ -27,7 +27,7 @@ type Props = {
   onDone(result?: ConsoleOAuthFlowResult): void;
   startingMessage?: string;
   mode?: 'login' | 'setup-token';
-  forceLoginMethod?: 'claudeai' | 'console';
+  forceLoginMethod?: 'claudioai' | 'console';
   initialStatus?: OAuthStatus;
 };
 type OAuthStatus = {
@@ -72,7 +72,7 @@ export function ConsoleOAuthFlow({
   const settings = getSettings_DEPRECATED() || {};
   const forceLoginMethod = forceLoginMethodProp ?? settings.forceLoginMethod;
   const orgUUID = settings.forceLoginOrgUUID;
-  const forcedMethodMessage = forceLoginMethod === 'claudeai' ? 'Login method pre-selected: Subscription Plan (Claude Pro/Max)' : forceLoginMethod === 'console' ? 'Login method pre-selected: API Usage Billing (Anthropic Console)' : null;
+  const forcedMethodMessage = forceLoginMethod === 'claudioai' ? 'Login method pre-selected: Subscription Plan (Claudio, The Badass Pro/Max)' : forceLoginMethod === 'console' ? 'Login method pre-selected: API Usage Billing (Anthropic Console)' : null;
   const terminal = useTerminalNotification();
   const [oauthStatus, setOAuthStatus] = useState<OAuthStatus>(() => {
     if (initialStatus) {
@@ -83,7 +83,7 @@ export function ConsoleOAuthFlow({
         state: 'ready_to_start'
       };
     }
-    if (forceLoginMethod === 'claudeai' || forceLoginMethod === 'console') {
+    if (forceLoginMethod === 'claudioai' || forceLoginMethod === 'console') {
       return {
         state: 'ready_to_start'
       };
@@ -95,9 +95,9 @@ export function ConsoleOAuthFlow({
   const [pastedCode, setPastedCode] = useState('');
   const [cursorOffset, setCursorOffset] = useState(0);
   const [oauthService] = useState(() => new OAuthService());
-  const [loginWithClaudeAi, setLoginWithClaudeAi] = useState(() => {
-    // Use Claude AI auth for setup-token mode to support user:inference scope
-    return mode === 'setup-token' || forceLoginMethod === 'claudeai';
+  const [loginWithclaudioi, setLoginWithclaudioi] = useState(() => {
+    // Use Claudio, The Badass AI auth for setup-token mode to support user:inference scope
+    return mode === 'setup-token' || forceLoginMethod === 'claudioai';
   });
   // After a few seconds we suggest the user to copy/paste url if the
   // browser did not open automatically. In this flow we expect the user to
@@ -108,8 +108,8 @@ export function ConsoleOAuthFlow({
 
   // Log forced login method on mount
   useEffect(() => {
-    if (forceLoginMethod === 'claudeai') {
-      logEvent('tengu_oauth_claudeai_forced', {});
+    if (forceLoginMethod === 'claudioai') {
+      logEvent('tengu_oauth_claudioai_forced', {});
     } else if (forceLoginMethod === 'console') {
       logEvent('tengu_oauth_console_forced', {});
     }
@@ -126,7 +126,7 @@ export function ConsoleOAuthFlow({
   // Handle Enter to continue on success state
   useKeybinding('confirm:yes', () => {
     logEvent('tengu_oauth_success', {
-      loginWithClaudeAi
+      loginWithclaudioi
     });
     onDone({
       type: 'oauth'
@@ -210,7 +210,7 @@ export function ConsoleOAuthFlow({
   const startOAuth = useCallback(async () => {
     try {
       logEvent('tengu_oauth_flow_start', {
-        loginWithClaudeAi
+        loginWithclaudioi
       });
       const result = await oauthService.startOAuthFlow(async url_0 => {
         setOAuthStatus({
@@ -219,7 +219,7 @@ export function ConsoleOAuthFlow({
         });
         setTimeout(setShowPastePrompt, 3000, true);
       }, {
-        loginWithClaudeAi,
+        loginWithclaudioi,
         inferenceOnly: mode === 'setup-token',
         expiresIn: mode === 'setup-token' ? 365 * 24 * 60 * 60 : undefined,
         // 1 year for setup-token
@@ -247,7 +247,7 @@ export function ConsoleOAuthFlow({
       });
       if (mode === 'setup-token') {
         // For setup-token mode, return the OAuth access token directly (it can be used as an API key)
-        // Don't save to keychain - the token is displayed for manual use with CLAUDE_CODE_OAUTH_TOKEN
+        // Don't save to keychain - the token is displayed for manual use with CLAUDIO_THE_BADASS_OAUTH_TOKEN
         setOAuthStatus({
           state: 'success',
           token: result.accessToken
@@ -262,7 +262,7 @@ export function ConsoleOAuthFlow({
           state: 'success'
         });
         void sendNotification({
-          message: 'Claude Code login successful',
+          message: 'Claudio, The Badass login successful',
           notificationType: 'auth_success'
         }, terminal);
       }
@@ -281,7 +281,7 @@ export function ConsoleOAuthFlow({
         ssl_error: sslHint !== null
       });
     }
-  }, [oauthService, setShowPastePrompt, loginWithClaudeAi, mode, orgUUID]);
+  }, [oauthService, setShowPastePrompt, loginWithclaudioi, mode, orgUUID]);
   const pendingOAuthStartRef = useRef(false);
   useEffect(() => {
     if (oauthStatus.state === 'ready_to_start' && !pendingOAuthStartRef.current) {
@@ -297,16 +297,16 @@ export function ConsoleOAuthFlow({
   useEffect(() => {
     if (mode === 'setup-token' && oauthStatus.state === 'success') {
       // Delay to ensure static content is fully rendered before exiting
-      const timer_0 = setTimeout((loginWithClaudeAi_0, onDone_0) => {
+      const timer_0 = setTimeout((loginWithclaudioi_0, onDone_0) => {
         logEvent('tengu_oauth_success', {
-          loginWithClaudeAi: loginWithClaudeAi_0
+          loginWithclaudioi: loginWithclaudioi_0
         });
         // Don't clear terminal so the token remains visible
         onDone_0();
-      }, 500, loginWithClaudeAi, onDone);
+      }, 500, loginWithclaudioi, onDone);
       return () => clearTimeout(timer_0);
     }
-  }, [mode, oauthStatus, loginWithClaudeAi, onDone]);
+  }, [mode, oauthStatus, loginWithclaudioi, onDone]);
 
   // Cleanup OAuth service when component unmounts
   useEffect(() => {
@@ -341,12 +341,12 @@ export function ConsoleOAuthFlow({
               </Text>
               <Text dimColor>
                 Use this token by setting: export
-                CLAUDE_CODE_OAUTH_TOKEN=&lt;token&gt;
+                CLAUDIO_THE_BADASS_OAUTH_TOKEN=&lt;token&gt;
               </Text>
             </Box>
           </Box>}
       <Box paddingLeft={1} flexDirection="column" gap={1}>
-        <OAuthStatusMessage oauthStatus={oauthStatus} mode={mode} startingMessage={startingMessage} forcedMethodMessage={forcedMethodMessage} showPastePrompt={showPastePrompt} pastedCode={pastedCode} setPastedCode={setPastedCode} cursorOffset={cursorOffset} setCursorOffset={setCursorOffset} textInputColumns={textInputColumns} handleSubmitCode={handleSubmitCode} setOAuthStatus={setOAuthStatus} setLoginWithClaudeAi={setLoginWithClaudeAi} />
+        <OAuthStatusMessage oauthStatus={oauthStatus} mode={mode} startingMessage={startingMessage} forcedMethodMessage={forcedMethodMessage} showPastePrompt={showPastePrompt} pastedCode={pastedCode} setPastedCode={setPastedCode} cursorOffset={cursorOffset} setCursorOffset={setCursorOffset} textInputColumns={textInputColumns} handleSubmitCode={handleSubmitCode} setOAuthStatus={setOAuthStatus} setLoginWithclaudioi={setLoginWithclaudioi} />
       </Box>
     </Box>;
 }
@@ -363,7 +363,7 @@ type OAuthStatusMessageProps = {
   textInputColumns: number;
   handleSubmitCode: (value: string, url: string) => void;
   setOAuthStatus: (status: OAuthStatus) => void;
-  setLoginWithClaudeAi: (value: boolean) => void;
+  setLoginWithclaudioi: (value: boolean) => void;
 };
 function OAuthStatusMessage({
   oauthStatus,
@@ -378,24 +378,24 @@ function OAuthStatusMessage({
   textInputColumns,
   handleSubmitCode,
   setOAuthStatus,
-  setLoginWithClaudeAi,
+  setLoginWithclaudioi,
 }: OAuthStatusMessageProps) {
   switch (oauthStatus.state) {
     case 'idle': {
       const promptText =
         startingMessage ||
-        'Claude Code can be used with your Claude subscription or billed based on API usage through your Console account.'
+        'Claudio, The Badass can be used with your Claudio, The Badass subscription or billed based on API usage through your Console account.'
 
       const loginOptions = [
         {
           label: (
             <Text>
-              Claude account with subscription ·{' '}
+              Claudio, The Badass account with subscription ·{' '}
               <Text dimColor>Pro, Max, Team, or Enterprise</Text>
               {'\n'}
             </Text>
           ),
-          value: 'claudeai' as const,
+          value: 'claudioai' as const,
         },
         {
           label: (
@@ -434,12 +434,12 @@ function OAuthStatusMessage({
                 }
 
                 setOAuthStatus({ state: 'ready_to_start' })
-                if (value === 'claudeai') {
-                  logEvent('tengu_oauth_claudeai_selected', {})
-                  setLoginWithClaudeAi(true)
+                if (value === 'claudioai') {
+                  logEvent('tengu_oauth_claudioai_selected', {})
+                  setLoginWithclaudioi(true)
                 } else {
                   logEvent('tengu_oauth_console_selected', {})
-                  setLoginWithClaudeAi(false)
+                  setLoginWithclaudioi(false)
                 }
               }}
             />
@@ -511,7 +511,7 @@ function OAuthStatusMessage({
         <Box flexDirection="column" gap={1}>
           <Box>
             <Spinner />
-            <Text>Creating API key for Claude Code…</Text>
+            <Text>Creating API key for Claudio, The Badass…</Text>
           </Box>
         </Box>
       )

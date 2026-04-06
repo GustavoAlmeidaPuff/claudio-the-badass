@@ -1,10 +1,10 @@
 {
-  "name": "@gitlawb/openclaude",
+  "name": "@gitlawb/Claudio-the-badass",
   "version": "0.1.8",
-  "description": "Claude Code opened to any LLM — OpenAI, Gemini, DeepSeek, Ollama, and 200+ models",
+  "description": "Claudio, The Badass opened to any LLM — OpenAI, Gemini, DeepSeek, Ollama, and 200+ models",
   "type": "module",
   "bin": {
-    "openclaude": "./bin/openclaude"
+    "Claudio-the-badass": "./bin/Claudio-the-badass"
   },
   "files": [
     "bin/",
@@ -140,10 +140,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://gitlawb.com/z6MkqDnb7Siv3Cwj7pGJq4T5EsUisECqR8KpnDLwcaZq5TPr/openclaude"
+    "url": "https://gitlawb.com/z6MkqDnb7Siv3Cwj7pGJq4T5EsUisECqR8KpnDLwcaZq5TPr/Claudio-the-badass"
   },
   "keywords": [
-    "claude-code",
+    "Claudio-the-badass",
     "openai",
     "llm",
     "cli",

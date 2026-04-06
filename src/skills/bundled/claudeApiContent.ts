@@ -1,65 +1,65 @@
-// Content for the claude-api bundled skill.
+// Content for the Claudio-api bundled skill.
 // Each .md file is inlined as a string at build time via Bun's text loader.
 
-import csharpClaudeApi from './claude-api/csharp/claude-api.md'
-import curlExamples from './claude-api/curl/examples.md'
-import goClaudeApi from './claude-api/go/claude-api.md'
-import javaClaudeApi from './claude-api/java/claude-api.md'
-import phpClaudeApi from './claude-api/php/claude-api.md'
-import pythonAgentSdkPatterns from './claude-api/python/agent-sdk/patterns.md'
-import pythonAgentSdkReadme from './claude-api/python/agent-sdk/README.md'
-import pythonClaudeApiBatches from './claude-api/python/claude-api/batches.md'
-import pythonClaudeApiFilesApi from './claude-api/python/claude-api/files-api.md'
-import pythonClaudeApiReadme from './claude-api/python/claude-api/README.md'
-import pythonClaudeApiStreaming from './claude-api/python/claude-api/streaming.md'
-import pythonClaudeApiToolUse from './claude-api/python/claude-api/tool-use.md'
-import rubyClaudeApi from './claude-api/ruby/claude-api.md'
-import skillPrompt from './claude-api/SKILL.md'
-import sharedErrorCodes from './claude-api/shared/error-codes.md'
-import sharedLiveSources from './claude-api/shared/live-sources.md'
-import sharedModels from './claude-api/shared/models.md'
-import sharedPromptCaching from './claude-api/shared/prompt-caching.md'
-import sharedToolUseConcepts from './claude-api/shared/tool-use-concepts.md'
-import typescriptAgentSdkPatterns from './claude-api/typescript/agent-sdk/patterns.md'
-import typescriptAgentSdkReadme from './claude-api/typescript/agent-sdk/README.md'
-import typescriptClaudeApiBatches from './claude-api/typescript/claude-api/batches.md'
-import typescriptClaudeApiFilesApi from './claude-api/typescript/claude-api/files-api.md'
-import typescriptClaudeApiReadme from './claude-api/typescript/claude-api/README.md'
-import typescriptClaudeApiStreaming from './claude-api/typescript/claude-api/streaming.md'
-import typescriptClaudeApiToolUse from './claude-api/typescript/claude-api/tool-use.md'
+import csharpclaudiopi from './Claudio-api/csharp/Claudio-api.md'
+import curlExamples from './Claudio-api/curl/examples.md'
+import goclaudiopi from './Claudio-api/go/Claudio-api.md'
+import javaclaudiopi from './Claudio-api/java/Claudio-api.md'
+import phpclaudiopi from './Claudio-api/php/Claudio-api.md'
+import pythonAgentSdkPatterns from './Claudio-api/python/agent-sdk/patterns.md'
+import pythonAgentSdkReadme from './Claudio-api/python/agent-sdk/README.md'
+import pythonclaudiopiBatches from './Claudio-api/python/Claudio-api/batches.md'
+import pythonclaudiopiFilesApi from './Claudio-api/python/Claudio-api/files-api.md'
+import pythonclaudiopiReadme from './Claudio-api/python/Claudio-api/README.md'
+import pythonclaudiopiStreaming from './Claudio-api/python/Claudio-api/streaming.md'
+import pythonclaudiopiToolUse from './Claudio-api/python/Claudio-api/tool-use.md'
+import rubyclaudiopi from './Claudio-api/ruby/Claudio-api.md'
+import skillPrompt from './Claudio-api/SKILL.md'
+import sharedErrorCodes from './Claudio-api/shared/error-codes.md'
+import sharedLiveSources from './Claudio-api/shared/live-sources.md'
+import sharedModels from './Claudio-api/shared/models.md'
+import sharedPromptCaching from './Claudio-api/shared/prompt-caching.md'
+import sharedToolUseConcepts from './Claudio-api/shared/tool-use-concepts.md'
+import typescriptAgentSdkPatterns from './Claudio-api/typescript/agent-sdk/patterns.md'
+import typescriptAgentSdkReadme from './Claudio-api/typescript/agent-sdk/README.md'
+import typescriptclaudiopiBatches from './Claudio-api/typescript/Claudio-api/batches.md'
+import typescriptclaudiopiFilesApi from './Claudio-api/typescript/Claudio-api/files-api.md'
+import typescriptclaudiopiReadme from './Claudio-api/typescript/Claudio-api/README.md'
+import typescriptclaudiopiStreaming from './Claudio-api/typescript/Claudio-api/streaming.md'
+import typescriptclaudiopiToolUse from './Claudio-api/typescript/Claudio-api/tool-use.md'
 
 // @[MODEL LAUNCH]: Update the model IDs/names below. These are substituted into {{VAR}}
 // placeholders in the .md files at runtime before the skill prompt is sent.
 // After updating these constants, manually update the two files that still hardcode models:
-//   - claude-api/SKILL.md (Current Models pricing table)
-//   - claude-api/shared/models.md (full model catalog with legacy versions and alias mappings)
+//   - Claudio-api/SKILL.md (Current Models pricing table)
+//   - Claudio-api/shared/models.md (full model catalog with legacy versions and alias mappings)
 export const SKILL_MODEL_VARS = {
-  OPUS_ID: 'claude-opus-4-6',
-  OPUS_NAME: 'Claude Opus 4.6',
-  SONNET_ID: 'claude-sonnet-4-6',
-  SONNET_NAME: 'Claude Sonnet 4.6',
-  HAIKU_ID: 'claude-haiku-4-5',
-  HAIKU_NAME: 'Claude Haiku 4.5',
+  OPUS_ID: 'Claudio-opus-4-6',
+  OPUS_NAME: 'Claudio, The Badass Opus 4.6',
+  SONNET_ID: 'Claudio-sonnet-4-6',
+  SONNET_NAME: 'Claudio, The Badass Sonnet 4.6',
+  HAIKU_ID: 'Claudio-haiku-4-5',
+  HAIKU_NAME: 'Claudio, The Badass Haiku 4.5',
   // Previous Sonnet ID — used in "do not append date suffixes" example in SKILL.md.
-  PREV_SONNET_ID: 'claude-sonnet-4-5',
+  PREV_SONNET_ID: 'Claudio-sonnet-4-5',
 } satisfies Record<string, string>
 
 export const SKILL_PROMPT: string = skillPrompt
 
 export const SKILL_FILES: Record<string, string> = {
-  'csharp/claude-api.md': csharpClaudeApi,
+  'csharp/Claudio-api.md': csharpclaudiopi,
   'curl/examples.md': curlExamples,
-  'go/claude-api.md': goClaudeApi,
-  'java/claude-api.md': javaClaudeApi,
-  'php/claude-api.md': phpClaudeApi,
+  'go/Claudio-api.md': goclaudiopi,
+  'java/Claudio-api.md': javaclaudiopi,
+  'php/Claudio-api.md': phpclaudiopi,
   'python/agent-sdk/README.md': pythonAgentSdkReadme,
   'python/agent-sdk/patterns.md': pythonAgentSdkPatterns,
-  'python/claude-api/README.md': pythonClaudeApiReadme,
-  'python/claude-api/batches.md': pythonClaudeApiBatches,
-  'python/claude-api/files-api.md': pythonClaudeApiFilesApi,
-  'python/claude-api/streaming.md': pythonClaudeApiStreaming,
-  'python/claude-api/tool-use.md': pythonClaudeApiToolUse,
-  'ruby/claude-api.md': rubyClaudeApi,
+  'python/Claudio-api/README.md': pythonclaudiopiReadme,
+  'python/Claudio-api/batches.md': pythonclaudiopiBatches,
+  'python/Claudio-api/files-api.md': pythonclaudiopiFilesApi,
+  'python/Claudio-api/streaming.md': pythonclaudiopiStreaming,
+  'python/Claudio-api/tool-use.md': pythonclaudiopiToolUse,
+  'ruby/Claudio-api.md': rubyclaudiopi,
   'shared/error-codes.md': sharedErrorCodes,
   'shared/live-sources.md': sharedLiveSources,
   'shared/models.md': sharedModels,
@@ -67,9 +67,9 @@ export const SKILL_FILES: Record<string, string> = {
   'shared/tool-use-concepts.md': sharedToolUseConcepts,
   'typescript/agent-sdk/README.md': typescriptAgentSdkReadme,
   'typescript/agent-sdk/patterns.md': typescriptAgentSdkPatterns,
-  'typescript/claude-api/README.md': typescriptClaudeApiReadme,
-  'typescript/claude-api/batches.md': typescriptClaudeApiBatches,
-  'typescript/claude-api/files-api.md': typescriptClaudeApiFilesApi,
-  'typescript/claude-api/streaming.md': typescriptClaudeApiStreaming,
-  'typescript/claude-api/tool-use.md': typescriptClaudeApiToolUse,
+  'typescript/Claudio-api/README.md': typescriptclaudiopiReadme,
+  'typescript/Claudio-api/batches.md': typescriptclaudiopiBatches,
+  'typescript/Claudio-api/files-api.md': typescriptclaudiopiFilesApi,
+  'typescript/Claudio-api/streaming.md': typescriptclaudiopiStreaming,
+  'typescript/Claudio-api/tool-use.md': typescriptclaudiopiToolUse,
 }

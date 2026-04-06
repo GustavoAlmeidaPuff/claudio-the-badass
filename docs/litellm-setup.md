@@ -1,10 +1,10 @@
 # LiteLLM Setup
 
-OpenClaude can connect to LiteLLM through LiteLLM's OpenAI-compatible proxy.
+Claudio, The Badass can connect to LiteLLM through LiteLLM's OpenAI-compatible proxy.
 
 ## Overview
 
-LiteLLM is an open-source LLM gateway that provides a unified API to 100+ model providers. By running the LiteLLM Proxy, you can route OpenClaude requests through LiteLLM to access any of its supported providers — all while using OpenClaude's existing OpenAI-compatible provider path.
+LiteLLM is an open-source LLM gateway that provides a unified API to 100+ model providers. By running the LiteLLM Proxy, you can route Claudio, The Badass requests through LiteLLM to access any of its supported providers — all while using Claudio, The Badass's existing OpenAI-compatible provider path.
 
 ## Prerequisites
 
@@ -31,9 +31,9 @@ model_list:
       model: openai/gpt-4o
       api_key: os.environ/OPENAI_API_KEY
 
-  - model_name: claude-sonnet-4
+  - model_name: Claudio-sonnet-4
     litellm_params:
-      model: anthropic/claude-sonnet-4-5-20250929
+      model: anthropic/Claudio-sonnet-4-5-20250929
       api_key: os.environ/ANTHROPIC_API_KEY
 
   - model_name: gemini-2.5-flash
@@ -55,23 +55,23 @@ litellm --config litellm_config.yaml --port 4000
 
 The proxy will start at `http://localhost:4000` by default.
 
-## 2. Point OpenClaude to LiteLLM
+## 2. Point Claudio, The Badass to LiteLLM
 
 ### Option A: Environment Variables
 
 ```bash
-export CLAUDE_CODE_USE_OPENAI=1
+export CLAUDIO_THE_BADASS_USE_OPENAI=1
 export OPENAI_BASE_URL=http://localhost:4000
 export OPENAI_API_KEY=<your-master-key-or-placeholder>
 export OPENAI_MODEL=<your-litellm-model-alias>
-openclaude
+Claudio-the-badass
 ```
 
-Replace `<your-litellm-model-alias>` with a model name from your `litellm_config.yaml` (e.g., `gpt-4o`, `claude-sonnet-4`, `gemini-2.5-flash`).
+Replace `<your-litellm-model-alias>` with a model name from your `litellm_config.yaml` (e.g., `gpt-4o`, `Claudio-sonnet-4`, `gemini-2.5-flash`).
 
 ### Option B: Using /provider
 
-1. Run `openclaude`
+1. Run `Claudio-the-badass`
 2. Type `/provider` to open the provider setup flow
 3. Choose the **OpenAI-compatible** option
 4. When prompted for the API key, enter the key required by your LiteLLM proxy
@@ -91,9 +91,9 @@ model_list:
       model: openai/gpt-4o
       api_key: os.environ/OPENAI_API_KEY
 
-  - model_name: claude-sonnet-4
+  - model_name: Claudio-sonnet-4
     litellm_params:
-      model: anthropic/claude-sonnet-4-5-20250929
+      model: anthropic/Claudio-sonnet-4-5-20250929
       api_key: os.environ/ANTHROPIC_API_KEY
 
   - model_name: deepseek-chat
@@ -112,20 +112,20 @@ litellm_settings:
 # Start proxy with a master key
 litellm --config litellm_config.yaml --port 4000 --master_key sk-my-master-key
 
-# Connect OpenClaude
-export CLAUDE_CODE_USE_OPENAI=1
+# Connect Claudio, The Badass
+export CLAUDIO_THE_BADASS_USE_OPENAI=1
 export OPENAI_BASE_URL=http://localhost:4000
 export OPENAI_API_KEY=sk-my-master-key
 export OPENAI_MODEL=gpt-4o
-openclaude
+Claudio-the-badass
 ```
 
 ## 4. Notes
 
 - `OPENAI_MODEL` must match the **LiteLLM model alias** defined in your config, not the upstream raw provider model name.
 - If your proxy requires authentication, use the proxy key (or `master_key`) in `OPENAI_API_KEY`.
-- LiteLLM's OpenAI-compatible endpoint accepts the same request format as OpenAI, so OpenClaude works without any code changes.
-- You can switch between any provider configured in LiteLLM by simply changing the `OPENAI_MODEL` value — no need to reconfigure OpenClaude.
+- LiteLLM's OpenAI-compatible endpoint accepts the same request format as OpenAI, so Claudio, The Badass works without any code changes.
+- You can switch between any provider configured in LiteLLM by simply changing the `OPENAI_MODEL` value — no need to reconfigure Claudio, The Badass.
 
 ## 5. Troubleshooting
 
@@ -135,7 +135,7 @@ openclaude
 | Connection Refused | LiteLLM proxy isn't running | Start the proxy with `litellm --config litellm_config.yaml --port 4000` |
 | Auth Failed | Missing or wrong `master_key` | Set the correct key in `OPENAI_API_KEY` |
 | Upstream provider error | The backend provider key is missing or invalid | Ensure the upstream API key (e.g., `OPENAI_API_KEY`) is set in your LiteLLM proxy process environment |
-| Tools fail but chat works | The selected model has weak function/tool calling support | Switch to a model with strong tool support (e.g., GPT-4o, Claude Sonnet) |
+| Tools fail but chat works | The selected model has weak function/tool calling support | Switch to a model with strong tool support (e.g., GPT-4o, Claudio, The Badass Sonnet) |
 
 ## 6. Resources
 

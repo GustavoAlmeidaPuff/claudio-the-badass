@@ -13,12 +13,12 @@ async function importFreshModelOptionsModule() {
 }
 
 const originalEnv = {
-  CLAUDE_CODE_USE_GITHUB: process.env.CLAUDE_CODE_USE_GITHUB,
-  CLAUDE_CODE_USE_OPENAI: process.env.CLAUDE_CODE_USE_OPENAI,
-  CLAUDE_CODE_USE_GEMINI: process.env.CLAUDE_CODE_USE_GEMINI,
-  CLAUDE_CODE_USE_BEDROCK: process.env.CLAUDE_CODE_USE_BEDROCK,
-  CLAUDE_CODE_USE_VERTEX: process.env.CLAUDE_CODE_USE_VERTEX,
-  CLAUDE_CODE_USE_FOUNDRY: process.env.CLAUDE_CODE_USE_FOUNDRY,
+  CLAUDIO_THE_BADASS_USE_GITHUB: process.env.CLAUDIO_THE_BADASS_USE_GITHUB,
+  CLAUDIO_THE_BADASS_USE_OPENAI: process.env.CLAUDIO_THE_BADASS_USE_OPENAI,
+  CLAUDIO_THE_BADASS_USE_GEMINI: process.env.CLAUDIO_THE_BADASS_USE_GEMINI,
+  CLAUDIO_THE_BADASS_USE_BEDROCK: process.env.CLAUDIO_THE_BADASS_USE_BEDROCK,
+  CLAUDIO_THE_BADASS_USE_VERTEX: process.env.CLAUDIO_THE_BADASS_USE_VERTEX,
+  CLAUDIO_THE_BADASS_USE_FOUNDRY: process.env.CLAUDIO_THE_BADASS_USE_FOUNDRY,
   OPENAI_MODEL: process.env.OPENAI_MODEL,
   OPENAI_BASE_URL: process.env.OPENAI_BASE_URL,
   ANTHROPIC_CUSTOM_MODEL_OPTION: process.env.ANTHROPIC_CUSTOM_MODEL_OPTION,
@@ -26,12 +26,12 @@ const originalEnv = {
 
 beforeEach(() => {
   mock.restore()
-  delete process.env.CLAUDE_CODE_USE_GITHUB
-  delete process.env.CLAUDE_CODE_USE_OPENAI
-  delete process.env.CLAUDE_CODE_USE_GEMINI
-  delete process.env.CLAUDE_CODE_USE_BEDROCK
-  delete process.env.CLAUDE_CODE_USE_VERTEX
-  delete process.env.CLAUDE_CODE_USE_FOUNDRY
+  delete process.env.CLAUDIO_THE_BADASS_USE_GITHUB
+  delete process.env.CLAUDIO_THE_BADASS_USE_OPENAI
+  delete process.env.CLAUDIO_THE_BADASS_USE_GEMINI
+  delete process.env.CLAUDIO_THE_BADASS_USE_BEDROCK
+  delete process.env.CLAUDIO_THE_BADASS_USE_VERTEX
+  delete process.env.CLAUDIO_THE_BADASS_USE_FOUNDRY
   delete process.env.OPENAI_MODEL
   delete process.env.OPENAI_BASE_URL
   delete process.env.ANTHROPIC_CUSTOM_MODEL_OPTION
@@ -39,12 +39,12 @@ beforeEach(() => {
 })
 
 afterEach(() => {
-  process.env.CLAUDE_CODE_USE_GITHUB = originalEnv.CLAUDE_CODE_USE_GITHUB
-  process.env.CLAUDE_CODE_USE_OPENAI = originalEnv.CLAUDE_CODE_USE_OPENAI
-  process.env.CLAUDE_CODE_USE_GEMINI = originalEnv.CLAUDE_CODE_USE_GEMINI
-  process.env.CLAUDE_CODE_USE_BEDROCK = originalEnv.CLAUDE_CODE_USE_BEDROCK
-  process.env.CLAUDE_CODE_USE_VERTEX = originalEnv.CLAUDE_CODE_USE_VERTEX
-  process.env.CLAUDE_CODE_USE_FOUNDRY = originalEnv.CLAUDE_CODE_USE_FOUNDRY
+  process.env.CLAUDIO_THE_BADASS_USE_GITHUB = originalEnv.CLAUDIO_THE_BADASS_USE_GITHUB
+  process.env.CLAUDIO_THE_BADASS_USE_OPENAI = originalEnv.CLAUDIO_THE_BADASS_USE_OPENAI
+  process.env.CLAUDIO_THE_BADASS_USE_GEMINI = originalEnv.CLAUDIO_THE_BADASS_USE_GEMINI
+  process.env.CLAUDIO_THE_BADASS_USE_BEDROCK = originalEnv.CLAUDIO_THE_BADASS_USE_BEDROCK
+  process.env.CLAUDIO_THE_BADASS_USE_VERTEX = originalEnv.CLAUDIO_THE_BADASS_USE_VERTEX
+  process.env.CLAUDIO_THE_BADASS_USE_FOUNDRY = originalEnv.CLAUDIO_THE_BADASS_USE_FOUNDRY
   process.env.OPENAI_MODEL = originalEnv.OPENAI_MODEL
   process.env.OPENAI_BASE_URL = originalEnv.OPENAI_BASE_URL
   process.env.ANTHROPIC_CUSTOM_MODEL_OPTION =
@@ -62,12 +62,12 @@ afterEach(() => {
 })
 
 test('GitHub provider exposes only default + GitHub model in /model options', async () => {
-  process.env.CLAUDE_CODE_USE_GITHUB = '1'
-  delete process.env.CLAUDE_CODE_USE_OPENAI
-  delete process.env.CLAUDE_CODE_USE_GEMINI
-  delete process.env.CLAUDE_CODE_USE_BEDROCK
-  delete process.env.CLAUDE_CODE_USE_VERTEX
-  delete process.env.CLAUDE_CODE_USE_FOUNDRY
+  process.env.CLAUDIO_THE_BADASS_USE_GITHUB = '1'
+  delete process.env.CLAUDIO_THE_BADASS_USE_OPENAI
+  delete process.env.CLAUDIO_THE_BADASS_USE_GEMINI
+  delete process.env.CLAUDIO_THE_BADASS_USE_BEDROCK
+  delete process.env.CLAUDIO_THE_BADASS_USE_VERTEX
+  delete process.env.CLAUDIO_THE_BADASS_USE_FOUNDRY
 
   process.env.OPENAI_MODEL = 'github:copilot'
   delete process.env.ANTHROPIC_CUSTOM_MODEL_OPTION

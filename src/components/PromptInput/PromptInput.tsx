@@ -763,7 +763,7 @@ function PromptInput({
     if (feature('ULTRAPLAN') && ultraplanTriggers.length) {
       addNotification({
         key: 'ultraplan-active',
-        text: 'This prompt will launch an ultraplan session in Claude Code on the web',
+        text: 'This prompt will launch an ultraplan session in Claudio, The Badass on the web',
         priority: 'immediate',
         timeoutMs: 5000
       });
@@ -775,7 +775,7 @@ function PromptInput({
     if (isUltrareviewEnabled() && ultrareviewTriggers.length) {
       addNotification({
         key: 'ultrareview-active',
-        text: 'Run /ultrareview after Claude finishes to review these changes in the cloud',
+        text: 'Run /ultrareview after Claudio, The Badass finishes to review these changes in the cloud',
         priority: 'immediate',
         timeoutMs: 5000
       });

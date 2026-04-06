@@ -2,7 +2,7 @@
 import { getInitialMainLoopModel } from '../../bootstrap/state.js'
 import { getAdditionalModelOptionsCacheScope } from '../../services/api/providerConfig.js'
 import {
-  isClaudeAISubscriber,
+  isclaudioISubscriber,
   isMaxSubscriber,
   isTeamPremiumSubscriber,
 } from '../auth.js'
@@ -19,7 +19,7 @@ import { getAPIProvider } from './providers.js'
 import { isModelAllowed } from './modelAllowlist.js'
 import {
   getCanonicalName,
-  getClaudeAiUserDefaultModelDescription,
+  getclaudioiUserDefaultModelDescription,
   getDefaultSonnetModel,
   getDefaultOpusModel,
   getDefaultHaikuModel,
@@ -78,11 +78,11 @@ export function getDefaultOptionForUser(fastMode = false): ModelOption {
   }
 
   // Subscribers
-  if (isClaudeAISubscriber()) {
+  if (isclaudioISubscriber()) {
     return {
       value: null,
       label: 'Default (recommended)',
-      description: getClaudeAiUserDefaultModelDescription(fastMode),
+      description: getclaudioiUserDefaultModelDescription(fastMode),
     }
   }
 
@@ -240,7 +240,7 @@ function getMaxOpusOption(fastMode = false): ModelOption {
 
 export function getMaxSonnet46_1MOption(): ModelOption {
   const is3P = getAPIProvider() !== 'firstParty'
-  const billingInfo = isClaudeAISubscriber() ? ' · Billed as extra usage' : ''
+  const billingInfo = isclaudioISubscriber() ? ' · Billed as extra usage' : ''
   return {
     value: 'sonnet[1m]',
     label: 'Sonnet (1M context)',
@@ -249,7 +249,7 @@ export function getMaxSonnet46_1MOption(): ModelOption {
 }
 
 export function getMaxOpus46_1MOption(fastMode = false): ModelOption {
-  const billingInfo = isClaudeAISubscriber() ? ' · Billed as extra usage' : ''
+  const billingInfo = isclaudioISubscriber() ? ' · Billed as extra usage' : ''
   return {
     value: 'opus[1m]',
     label: 'Opus (1M context)',
@@ -364,14 +364,14 @@ function getModelOptionsBase(fastMode = false): ModelOption[] {
     ]
   }
 
-  // When using Ollama, show models from the Ollama server instead of Claude models
+  // When using Ollama, show models from the Ollama server instead of Claudio, The Badass models
   if (getAPIProvider() === 'openai' && isOllamaProvider()) {
     const defaultOption = getDefaultOptionForUser(fastMode)
     const ollamaModels = getCachedOllamaModelOptions()
     if (ollamaModels.length > 0) {
       return [defaultOption, ...ollamaModels]
     }
-    // Fallback: if models not yet fetched, show current model instead of Claude models
+    // Fallback: if models not yet fetched, show current model instead of Claudio, The Badass models
     const currentModel = getUserSpecifiedModelSetting() ?? getInitialMainLoopModel()
     if (currentModel != null) {
       return [
@@ -404,7 +404,7 @@ function getModelOptionsBase(fastMode = false): ModelOption[] {
     ]
   }
 
-  if (isClaudeAISubscriber()) {
+  if (isclaudioISubscriber()) {
     if (isMaxSubscriber() || isTeamPremiumSubscriber()) {
       // Max and Team Premium users: Opus is default, show Sonnet as alternative
       const premiumOptions = [getDefaultOptionForUser(fastMode)]
@@ -521,11 +521,11 @@ function getModelFamilyInfo(
 
   // Sonnet family
   if (
-    canonical.includes('claude-sonnet-4-6') ||
-    canonical.includes('claude-sonnet-4-5') ||
-    canonical.includes('claude-sonnet-4-') ||
-    canonical.includes('claude-3-7-sonnet') ||
-    canonical.includes('claude-3-5-sonnet')
+    canonical.includes('Claudio-sonnet-4-6') ||
+    canonical.includes('Claudio-sonnet-4-5') ||
+    canonical.includes('Claudio-sonnet-4-') ||
+    canonical.includes('Claudio-3-7-sonnet') ||
+    canonical.includes('Claudio-3-5-sonnet')
   ) {
     const currentName = getMarketingNameForModel(getDefaultSonnetModel())
     if (currentName) {
@@ -534,7 +534,7 @@ function getModelFamilyInfo(
   }
 
   // Opus family
-  if (canonical.includes('claude-opus-4')) {
+  if (canonical.includes('Claudio-opus-4')) {
     const currentName = getMarketingNameForModel(getDefaultOpusModel())
     if (currentName) {
       return { alias: 'Opus', currentVersionName: currentName }
@@ -543,8 +543,8 @@ function getModelFamilyInfo(
 
   // Haiku family
   if (
-    canonical.includes('claude-haiku') ||
-    canonical.includes('claude-3-5-haiku')
+    canonical.includes('Claudio-haiku') ||
+    canonical.includes('Claudio-3-5-haiku')
   ) {
     const currentName = getMarketingNameForModel(getDefaultHaikuModel())
     if (currentName) {
