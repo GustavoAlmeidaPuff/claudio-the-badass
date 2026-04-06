@@ -243,8 +243,12 @@ function checkOpenAIEnv(): CheckResult[] {
 
   const key = process.env.OPENAI_API_KEY
   const githubToken = process.env.GITHUB_TOKEN ?? process.env.GH_TOKEN
-  if (key === 'SUA_CHAVE') {
-    results.push(fail('OPENAI_API_KEY', 'Placeholder value detected: SUA_CHAVE.'))
+  const keyTrimmed = key?.trim()
+  const isPlaceholderKey =
+    keyTrimmed === 'SUA_CHAVE' ||
+    keyTrimmed?.toLowerCase() === 'sk-sua-chave-aqui'
+  if (isPlaceholderKey) {
+    results.push(fail('OPENAI_API_KEY', 'Placeholder value detected; set a real key via user environment variables.'))
   } else if (
     !key &&
     !isLocalBaseUrl(request.baseUrl) &&

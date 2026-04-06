@@ -204,7 +204,7 @@ export function getProviderPresetDefaults(
         provider: 'openai',
         name: 'OpenRouter',
         baseUrl: 'https://openrouter.ai/api/v1',
-        model: 'openai/gpt-5-mini',
+        model: 'qwen/qwen3.6-plus:free',
         apiKey: '',
         requiresApiKey: true,
       }

@@ -9,10 +9,26 @@ const DEFAULT_CONFIG = {
   env: {
     CLAUDIO_THE_BADASS_USE_OPENAI: '1',
     OPENAI_BASE_URL: 'https://openrouter.ai/api/v1',
-    OPENAI_MODEL: 'qwen/qwen3-6b:free',
-    OPENAI_API_KEY: 'sk-sua-chave-aqui',
+    OPENAI_MODEL: 'qwen/qwen3.6-plus:free',
   },
   createdAt: new Date().toISOString(),
+}
+
+function envBlockForProfileWrite(): Record<string, string> {
+  const fromProcess = process.env['OPENAI_API_KEY']?.trim()
+  const env: Record<string, string> = {
+    CLAUDIO_THE_BADASS_USE_OPENAI: '1',
+    OPENAI_BASE_URL:
+      process.env['OPENAI_BASE_URL']?.trim() ||
+      DEFAULT_CONFIG.env.OPENAI_BASE_URL,
+    OPENAI_MODEL:
+      process.env['OPENAI_MODEL']?.trim() || DEFAULT_CONFIG.env.OPENAI_MODEL,
+  }
+  // Nunca persiste chave fictícia: só grava se já existir no ambiente (ou o usuário cola no JSON depois).
+  if (fromProcess) {
+    env.OPENAI_API_KEY = fromProcess
+  }
+  return env
 }
 
 export const call: LocalJSXCommandCall = async (onDone, _context, _args) => {
@@ -21,25 +37,19 @@ export const call: LocalJSXCommandCall = async (onDone, _context, _args) => {
     '.Claudio-the-badass-profile.json',
   )
 
-  // Sempre escreve o que está rodando agora antes de abrir
+  // Sempre escreve o que está rodando agora antes de abrir (sem chave placeholder no repositório nem no arquivo modelo).
   const current = {
     profile: 'openai',
-    env: {
-      CLAUDIO_THE_BADASS_USE_OPENAI: '1',
-      OPENAI_BASE_URL:
-        process.env['OPENAI_BASE_URL'] ?? DEFAULT_CONFIG.env.OPENAI_BASE_URL,
-      OPENAI_MODEL:
-        process.env['OPENAI_MODEL'] ?? DEFAULT_CONFIG.env.OPENAI_MODEL,
-      OPENAI_API_KEY:
-        process.env['OPENAI_API_KEY'] ?? DEFAULT_CONFIG.env.OPENAI_API_KEY,
-    },
+    env: envBlockForProfileWrite(),
     createdAt: new Date().toISOString(),
   }
 
   writeFileSync(profilePath, JSON.stringify(current, null, 2), 'utf8')
 
   onDone(
-    `Abrindo ${profilePath} no Notepad...\nSalve o arquivo, feche o Notepad e o Claudio, The Badass vai reiniciar com as novas configuracoes.`,
+    `Abrindo ${profilePath} no Notepad...\n` +
+      `OPENAI_API_KEY não é gravada por padrão (evita expor chaves). Defina a chave nas variáveis de ambiente do usuário do Windows ou inclua \"OPENAI_API_KEY\" neste JSON.\n` +
+      `Salve o arquivo, feche o Notepad e o Claudio, The Badass vai reiniciar com as novas configuracoes.`,
     { display: 'system' },
   )
 

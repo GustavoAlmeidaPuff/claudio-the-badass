@@ -15,6 +15,14 @@ function isEnvTruthy(value: string | undefined): boolean {
   return normalized !== '' && normalized !== '0' && normalized !== 'false' && normalized !== 'no'
 }
 
+function isPlaceholderOpenaiApiKey(value: string | undefined): boolean {
+  const t = value?.trim()
+  if (!t) return false
+  if (t === 'SUA_CHAVE') return true
+  if (t.toLowerCase() === 'sk-sua-chave-aqui') return true
+  return false
+}
+
 export async function getProviderValidationError(
   env: NodeJS.ProcessEnv = process.env,
   options?: {
@@ -53,8 +61,8 @@ export async function getProviderValidationError(
     baseUrl: env.OPENAI_BASE_URL,
   })
 
-  if (env.OPENAI_API_KEY === 'SUA_CHAVE') {
-    return 'Invalid OPENAI_API_KEY: placeholder value SUA_CHAVE detected. Set a real key or unset for local providers.'
+  if (isPlaceholderOpenaiApiKey(env.OPENAI_API_KEY)) {
+    return 'Invalid OPENAI_API_KEY: placeholder value detected. Set a real key via environment variables (recommended) or edit your profile JSON; do not commit keys.'
   }
 
   if (request.transport === 'codex_responses') {
