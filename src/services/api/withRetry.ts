@@ -790,7 +790,12 @@ function shouldRetry(error: APIError): boolean {
 
   // Clear API key cache on 401 and allow retry.
   // OAuth token handling is done in the main retry loop via handleOAuth401Error.
+  // Exception: permanent auth failures (e.g. OpenRouter "User not found") should not retry.
   if (error.status === 401) {
+    const msg = (error.message || '').toLowerCase()
+    if (msg.includes('user not found') || msg.includes('invalid api key') || msg.includes('no auth credentials')) {
+      return false
+    }
     clearApiKeyHelperCache()
     return true
   }
