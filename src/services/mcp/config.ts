@@ -633,7 +633,7 @@ export async function addMcpConfig(
     )
   }
 
-  // Block reserved server name "Cladio-in-chrome"
+  // Block reserved server name "Claudio-in-chrome"
   if (isclaudionChromeMCPServer(name)) {
     throw new Error(`Cannot add MCP server "${name}": this name is reserved.`)
   }

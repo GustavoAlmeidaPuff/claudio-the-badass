@@ -480,7 +480,7 @@ export async function initReplBridge(
       require('../assistant/index.js') as typeof import('../assistant/index.js')
     /* eslint-enable @typescript-eslint/no-require-imports */
     if (isAssistantMode()) {
-      workerType = 'claude_code_assistant'
+      workerType = 'claudio_code_assistant'
     }
   }
 

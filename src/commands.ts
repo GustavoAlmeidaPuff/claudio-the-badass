@@ -132,7 +132,7 @@ import fast from './commands/fast/index.js'
 import passes from './commands/passes/index.js'
 import privacySettings from './commands/privacy-settings/index.js'
 import provider from './commands/provider/index.js'
-import configuracao from './commands/configuracao/index.js'
+import env from './commands/env/index.js'
 import hooks from './commands/hooks/index.js'
 import files from './commands/files/index.js'
 import branch from './commands/branch/index.js'
@@ -299,7 +299,7 @@ const COMMANDS = memoize((): Command[] => [
   remoteEnv,
   plugin,
   provider,
-  configuracao,
+  env,
   pr_comments,
   releaseNotes,
   reloadPlugins,

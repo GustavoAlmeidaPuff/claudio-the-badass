@@ -126,7 +126,7 @@ export function setupclaudionChrome(): {
         [CLAUDIO_IN_CHROME_MCP_SERVER_NAME]: {
           type: 'stdio' as const,
           command: process.execPath,
-          args: ['--Cladio-in-chrome-mcp'],
+          args: ['--Claudio-in-chrome-mcp'],
           scope: 'dynamic' as const,
           ...(hasEnv && { env }),
         },
@@ -156,7 +156,7 @@ export function setupclaudionChrome(): {
       [CLAUDIO_IN_CHROME_MCP_SERVER_NAME]: {
         type: 'stdio' as const,
         command: process.execPath,
-        args: [`${cliPath}`, '--Cladio-in-chrome-mcp'],
+        args: [`${cliPath}`, '--Claudio-in-chrome-mcp'],
         scope: 'dynamic' as const,
         ...(hasEnv && { env }),
       },

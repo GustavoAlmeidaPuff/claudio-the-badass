@@ -9,7 +9,7 @@ import { execFileNoThrow } from '../execFileNoThrow.js'
 import { getPlatform } from '../platform.js'
 import { which } from '../which.js'
 
-export const CLAUDIO_IN_CHROME_MCP_SERVER_NAME = 'Cladio-in-chrome'
+export const CLAUDIO_IN_CHROME_MCP_SERVER_NAME = 'Claudio-in-chrome'
 
 // Re-export ChromiumBrowser type for setup.ts
 export type { ChromiumBrowser } from './setupPortable.js'

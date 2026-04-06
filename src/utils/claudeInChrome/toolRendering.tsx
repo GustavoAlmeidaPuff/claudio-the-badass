@@ -142,7 +142,7 @@ function renderChromeViewTabLink(input: unknown): React.ReactNode {
 }
 
 /**
- * Custom tool result message rendering for Cladio-in-chrome tools.
+ * Custom tool result message rendering for Claudio-in-chrome tools.
  * Shows a brief summary for successful results. Errors are handled by
  * the default renderToolUseErrorMessage when is_error is set.
  */

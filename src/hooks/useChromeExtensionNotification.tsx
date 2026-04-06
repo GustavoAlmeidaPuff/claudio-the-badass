@@ -40,7 +40,7 @@ async function _temp() {
   }
   if (chromeFlag === undefined) {
     return {
-      key: "Cladio-in-chrome-default-enabled",
+      key: "Claudio-in-chrome-default-enabled",
       text: "Claudio, The Badass in Chrome enabled \xB7 /chrome",
       priority: "low"
     };

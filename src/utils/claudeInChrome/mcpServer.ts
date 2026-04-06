@@ -23,7 +23,7 @@ import { getAllSocketPaths, getSecureSocketPath } from './common.js'
 
 const EXTENSION_DOWNLOAD_URL = 'https://Claudio.ai/chrome'
 const BUG_REPORT_URL =
-  'https://github.com/anthropics/Claudio-the-badass/issues/new?labels=bug,Cladio-in-chrome'
+  'https://github.com/anthropics/Claudio-the-badass/issues/new?labels=bug,Claudio-in-chrome'
 
 // String metadata keys safe to forward to analytics. Keys like error_message
 // are excluded because they could contain page content or user data.
@@ -242,7 +242,7 @@ export function createChromeContext(
   }
 }
 
-export async function runclaudionChromeMcpServer(): Promise<void> {
+export async function runclaudeInChromeMcpServer(): Promise<void> {
   enableConfigs()
   initializeAnalyticsSink()
   const context = createChromeContext()

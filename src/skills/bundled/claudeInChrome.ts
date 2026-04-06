@@ -15,7 +15,7 @@ IMPORTANT: Start by calling mcp__claudio-in-chrome__tabs_context_mcp to get info
 
 export function registerclaudionChromeSkill(): void {
   registerBundledSkill({
-    name: 'Cladio-in-chrome',
+    name: 'Claudio-in-chrome',
     description:
       'Automates your Chrome browser to interact with web pages - clicking elements, filling forms, capturing screenshots, reading console logs, and navigating sites. Opens pages in new tabs within your existing Chrome session. Requires site-level permissions before executing (configured in the extension).',
     whenToUse:

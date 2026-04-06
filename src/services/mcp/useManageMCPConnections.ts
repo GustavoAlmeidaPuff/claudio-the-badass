@@ -946,14 +946,14 @@ export function useManageMCPConnections(
           })
 
           // Now start connecting (only enabled servers)
-          const enabledClaudeaiConfigs = Object.fromEntries(
+          const enabledClaudioaiConfigs = Object.fromEntries(
             Object.entries(claudioaiConfigs).filter(
               ([name]) => !isMcpServerDisabled(name),
             ),
           )
           getMcpToolsCommandsAndResources(
             onConnectionAttempt,
-            enabledClaudeaiConfigs,
+            enabledClaudioaiConfigs,
           ).catch(error => {
             logMCPError(
               'useManageMcpConnections',

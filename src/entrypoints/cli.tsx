@@ -52,7 +52,7 @@ async function main(): Promise<void> {
   if (args.length === 1 && (args[0] === '--version' || args[0] === '-v' || args[0] === '-V')) {
     // MACRO.VERSION is inlined at build time
     // biome-ignore lint/suspicious/noConsole:: intentional console output
-    console.log(`${MACRO.DISPLAY_VERSION ?? MACRO.VERSION} (Open Claudio)`);
+    console.log(`${MACRO.DISPLAY_VERSION ?? MACRO.VERSION}`);
     return;
   }
 
@@ -127,18 +127,18 @@ async function main(): Promise<void> {
     console.log(prompt.join('\n'));
     return;
   }
-  if (process.argv[2] === '--Cladio-in-chrome-mcp') {
+  if (process.argv[2] === '--Claudio-in-chrome-mcp') {
     profileCheckpoint('cli_claudio_in_chrome_mcp_path');
     const {
-      runclaudionChromeMcpServer
-    } = await import('../utils/claudionChrome/mcpServer.js');
-    await runclaudionChromeMcpServer();
+      runclaudeInChromeMcpServer
+    } = await import('../utils/claudeInChrome/mcpServer.js');
+    await runclaudeInChromeMcpServer();
     return;
   } else if (process.argv[2] === '--chrome-native-host') {
     profileCheckpoint('cli_chrome_native_host_path');
     const {
       runChromeNativeHost
-    } = await import('../utils/claudionChrome/chromeNativeHost.js');
+    } = await import('../utils/claudeInChrome/chromeNativeHost.js');
     await runChromeNativeHost();
     return;
   } else if (feature('CHICAGO_MCP') && process.argv[2] === '--computer-use-mcp') {

@@ -5,6 +5,7 @@ dist/
 .env.*
 !.env.example
 .Claudio-the-badass-profile.json
+.openclaude-profile.json
 reports/
 GEMINI.md
 package-lock.json

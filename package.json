@@ -4,7 +4,8 @@
   "description": "Claudio, The Badass opened to any LLM — OpenAI, Gemini, DeepSeek, Ollama, and 200+ models",
   "type": "module",
   "bin": {
-    "Claudio-the-badass": "./bin/Claudio-the-badass"
+    "Claudio-the-badass": "./bin/openclaude",
+    "claudio": "./bin/openclaude"
   },
   "files": [
     "bin/",
